@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+		"module": "umd",
+		"moduleResolution": "node",
+    "removeComments": true,
+    "declaration": true,
+    "preserveConstEnums": true,
+    "outDir": "lib/umd",
+    "sourceMap": true,
+    "allowJs": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noImplicitReturns": true,
+    "stripInternal": true,
+    "downlevelIteration": true,
+    "lib": [
+			"es5", "es2015.promise"
+		]
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
+}
