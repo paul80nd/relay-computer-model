@@ -21,7 +21,7 @@
     "clean": "rimraf lib",
     "gen": "npx pegjs -o lib/umd/src/g_parser.js src/parser.pegjs",
     "gen-esm": "npx pegjs -o lib/esm/src/g_parser.js src/parser.pegjs",
-    "test": "npm run compile && mocha ./lib/umd/test/*.js",
+    "test": "npm run compile && mocha ./lib/umd/test/**/*.js",
     "lint": "eslint src/**/*.ts",
     "watch": "tsc --watch -p ."
   },
