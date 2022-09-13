@@ -1,8 +1,7 @@
 import { BitValue } from '../bit_value';
 import { CardPart } from '../cards/card_part';
 import { IControlSwitchesBusGroup } from '../bus/bus_groups';
-import { DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus_part_lines';
-import { ClockLines } from '../bus/bus_part_lines';
+import { ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus_part_lines';
 
 export interface IControlSwitchesCard {
 
@@ -73,31 +72,31 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
   }
 
   deposit(): void {
-    if (this.auxState == 0) {
+    if (this.auxState === 0) {
       this.auxInstr = AuxInstruction.Deposit;
       this.startAuxClock();
     }
   }
   depositNext(): void {
-    if (this.auxState == 0) {
+    if (this.auxState === 0) {
       this.auxInstr = AuxInstruction.DepositNext;
       this.startAuxClock();
     }
   }
   examine(): void {
-    if (this.auxState == 0) {
+    if (this.auxState === 0) {
       this.auxInstr = AuxInstruction.Examine;
       this.startAuxClock();
     }
   }
   examineNext(): void {
-    if (this.auxState == 0) {
+    if (this.auxState === 0) {
       this.auxInstr = AuxInstruction.ExamineNext;
       this.startAuxClock();
     }
   }
   loadAddr(): void {
-    if (this.auxState == 0) {
+    if (this.auxState === 0) {
       this.auxInstr = AuxInstruction.LoadAddr;
       this.startAuxClock();
     }
@@ -116,56 +115,56 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
       let regABCD = BitValue.Zero;
       let sds = BitValue.Zero;
 
-      if (this.auxState == 1 || this.auxState == 2 || this.auxState == 3) {
+      if (this.auxState === 1 || this.auxState === 2 || this.auxState === 3) {
         // PULSE A
-        if (this.auxInstr == AuxInstruction.Deposit || this.auxInstr == AuxInstruction.DepositNext) {
+        if (this.auxInstr === AuxInstruction.Deposit || this.auxInstr === AuxInstruction.DepositNext) {
           // Sel-PC, Sel-DS and B2M
           auxReg = auxReg.flipBit(RegAuxLines.SPC);
           sds = sds.flipBit(DataSwitchGateLines.SDS);
           memory = memory.flipBit(MemoryLines.B2M);
         }
-        if (this.auxInstr == AuxInstruction.Examine || this.auxInstr == AuxInstruction.ExamineNext) {
+        if (this.auxInstr === AuxInstruction.Examine || this.auxInstr === AuxInstruction.ExamineNext) {
           // Sel-PC and Mem-Rd
           auxReg = auxReg.flipBit(RegAuxLines.SPC);
           memory = memory.flipBit(MemoryLines.MER);
         }
-        if (this.auxInstr == AuxInstruction.LoadAddr) {
+        if (this.auxInstr === AuxInstruction.LoadAddr) {
           // Sel-AS
           sds = sds.flipBit(DataSwitchGateLines.SAS);
         }
       }
 
-      if (this.auxState == 1 || this.auxState == 2) {
+      if (this.auxState === 1 || this.auxState === 2) {
         // PULSE B
-        if (this.auxInstr == AuxInstruction.Deposit || this.auxInstr == AuxInstruction.DepositNext) {
+        if (this.auxInstr === AuxInstruction.Deposit || this.auxInstr === AuxInstruction.DepositNext) {
           // Mem-WR
           memory = memory.flipBit(MemoryLines.MEW);
         }
-        if (this.auxInstr == AuxInstruction.DepositNext || this.auxInstr == AuxInstruction.ExamineNext) {
+        if (this.auxInstr === AuxInstruction.DepositNext || this.auxInstr === AuxInstruction.ExamineNext) {
           // Ld-INC
           auxReg = auxReg.flipBit(RegAuxLines.LIC);
         }
-        if (this.auxInstr == AuxInstruction.Examine || this.auxInstr == AuxInstruction.ExamineNext) {
+        if (this.auxInstr === AuxInstruction.Examine || this.auxInstr === AuxInstruction.ExamineNext) {
           // Ld-A
           regABCD = regABCD.flipBit(RegABCDLines.RLA);
         }
-        if (this.auxInstr == AuxInstruction.LoadAddr) {
+        if (this.auxInstr === AuxInstruction.LoadAddr) {
           // Ld-PC
           auxReg = auxReg.flipBit(RegAuxLines.LPC);
         }
       }
 
-      if (this.auxState == 5 || this.auxState == 6) {
+      if (this.auxState === 5 || this.auxState === 6) {
         // PULSE C
-        if (this.auxInstr == AuxInstruction.DepositNext || this.auxInstr == AuxInstruction.ExamineNext) {
+        if (this.auxInstr === AuxInstruction.DepositNext || this.auxInstr === AuxInstruction.ExamineNext) {
           // Sel-INC
           auxReg = auxReg.flipBit(RegAuxLines.SIC);
         }
       }
 
-      if (this.auxState == 5) {
+      if (this.auxState === 5) {
         // PULSE D
-        if (this.auxInstr == AuxInstruction.DepositNext || this.auxInstr == AuxInstruction.ExamineNext) {
+        if (this.auxInstr === AuxInstruction.DepositNext || this.auxInstr === AuxInstruction.ExamineNext) {
           // Ld-PC
           auxReg = auxReg.flipBit(RegAuxLines.LPC);
         }
@@ -176,14 +175,14 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
       if (!this.regABCDOut.value.isEqualTo(regABCD)) { this.regABCDOut.value = regABCD; }
       if (!this.sdsOut.value.isEqualTo(sds)) { this.sdsOut.value = sds; }
 
-      if (this.auxState == 4) {
+      if (this.auxState === 4) {
         // AUX-RESET (Short)
-        if (this.auxInstr == AuxInstruction.Deposit || this.auxInstr == AuxInstruction.Examine || this.auxInstr == AuxInstruction.LoadAddr) {
+        if (this.auxInstr === AuxInstruction.Deposit || this.auxInstr === AuxInstruction.Examine || this.auxInstr === AuxInstruction.LoadAddr) {
           this.auxState = 0;
           return;     // Fall from method without setting callback timeout
         }
       }
-      if (this.auxState == 7) {
+      if (this.auxState === 7) {
         // AUX-RESET (Long)
         this.auxState = 0;
         return;

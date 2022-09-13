@@ -1,7 +1,7 @@
-import { IBusPartFactory } from './bus_parts';
 import {
   IAbortBusPart, IAddressBusPart,
   IAluFunctionClBusPart, IAluOperationBusPart, IAuxRegisterBusPart,
+  IBusPartFactory,
   IClockBusPart,
   IConditionBusPart, IDataBusPart, IDataSwitchGateBusPart,
   II2BBusPart, IInstructionBusPart,

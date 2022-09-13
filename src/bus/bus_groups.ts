@@ -1,6 +1,6 @@
-import { IBusFactory } from './bus';
 import {
   IAddressBus,
+  IBusFactory,
   IControlInstructionBus, IControlXBus, IControlYBus,
   IControlZBus, IDataControlBus, IDataInstructionBus,
   IDisplayA1Bus, IDisplayA2Bus,
