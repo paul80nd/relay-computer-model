@@ -11,7 +11,7 @@ import { IRegisterICard } from './cards/register_i.card';
 import { IRegisterPCCard } from './cards/register_pc.card';
 import { ISequencerCard } from './cards/sequencer.card';
 import { ICardWBusGroup, ICardXBusGroup, ICardYBusGroup, ICardZBusGroup } from './bus/bus_groups';
-import { ICardFactory } from './cards';
+import { ICardFactory } from './cards/cards';
 import { IRegisterMCard } from './cards/register_m.card';
 import { IRegisterXYCard } from './cards/register_xy.card';
 import { IRegisterJCard } from './cards/register_j.card';

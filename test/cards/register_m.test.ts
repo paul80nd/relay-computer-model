@@ -6,7 +6,7 @@ import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus_groups';
 import { BusPartFactory } from '../../src/bus/bus_parts';
 import { RegJMXYLines } from '../../src/bus/bus_part_lines';
-import { CardFactory } from '../../src/cards';
+import { CardFactory } from '../../src/cards/cards';
 import { CardPart } from '../../src/cards/card_part';
 
 suite('card-register-m', () => {
