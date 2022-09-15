@@ -3,9 +3,9 @@ import { IDisplayBCard } from './cards/display-b.card';
 import { IControlSwitchesCard } from './cards/control-switches.card';
 import { IAuxControlCard } from './cards/aux-control.card';
 import { BusFactory } from './bus/bus';
-import { BusPartFactory } from './bus/bus_parts';
-import { BusGroupFactory } from './bus/bus_groups';
-import { CardFactory } from './card_factory';
+import { BusPartFactory } from './bus/bus-parts';
+import { BusGroupFactory } from './bus/bus-groups';
+import { CardFactory } from './card-factory';
 import {
   BackplaneFactory,
   IWBackplane, IXBackplane, IYBackplane, IZBackplane

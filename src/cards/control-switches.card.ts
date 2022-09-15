@@ -1,7 +1,7 @@
-import { BitValue } from '../bit_value';
+import { BitValue } from '../bit-value';
 import { CardPart } from './card-part';
-import { IControlSwitchesBusGroup } from '../bus/bus_groups';
-import { ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus_part_lines';
+import { IControlSwitchesBusGroup } from '../bus/bus-groups';
+import { ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus-part-lines';
 
 export interface IControlSwitchesCard {
 

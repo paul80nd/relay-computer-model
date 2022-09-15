@@ -1,8 +1,8 @@
-import { BitValue } from '../bit_value';
+import { BitValue } from '../bit-value';
 import { CardPart } from './card-part';
-import { ICardZBusGroup } from '../bus/bus_groups';
-import { IAluOperationBusPart, IDataBusPart } from '../bus/bus_parts';
-import { AluOperationLines } from '../bus/bus_part_lines';
+import { ICardZBusGroup } from '../bus/bus-groups';
+import { IAluOperationBusPart, IDataBusPart } from '../bus/bus-parts';
+import { AluOperationLines } from '../bus/bus-part-lines';
 
 export interface IAluArithmeticCard {
 

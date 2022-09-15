@@ -1,8 +1,8 @@
-import { BitValue } from '../bit_value';
+import { BitValue } from '../bit-value';
 import { CardPart } from './card-part';
-import { ICardYBusGroup } from '../bus/bus_groups';
-import { IAddressBusPart, IDataBusPart, IMemoryBusPart } from '../bus/bus_parts';
-import { MemoryLines } from '../bus/bus_part_lines';
+import { ICardYBusGroup } from '../bus/bus-groups';
+import { IAddressBusPart, IDataBusPart, IMemoryBusPart } from '../bus/bus-parts';
+import { MemoryLines } from '../bus/bus-part-lines';
 
 export interface IMemoryCard {
   memoryAddress: BitValue;

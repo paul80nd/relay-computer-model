@@ -1,4 +1,4 @@
-import { BitValue } from '../bit_value';
+import { BitValue } from '../bit-value';
 import { Observable } from '../observable';
 
 /**

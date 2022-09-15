@@ -8,7 +8,7 @@ import {
   IMemoryBusPart,
   IOperationBusPart, IPulseBusPart,
   IRegisterABCDBusPart, IRegisterJMXYBusPart, IResetBusPart
-} from './bus_parts';
+} from './bus-parts';
 
 /** A bus represents a physical ribbon cable that carries one or more bus parts (collection of lines) */
 export interface IBus { }

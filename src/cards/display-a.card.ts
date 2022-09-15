@@ -1,12 +1,12 @@
 import { CardPart } from './card-part';
-import { BitValue } from '../bit_value';
-import { IDisplayABusGroup } from '../bus/bus_groups';
+import { BitValue } from '../bit-value';
+import { IDisplayABusGroup } from '../bus/bus-groups';
 import {
   IAluFunctionClBusPart, IAluOperationBusPart,
   IAuxRegisterBusPart, IClockBusPart,
   IDataSwitchGateBusPart, II2BBusPart,
   IMemoryBusPart, IRegisterABCDBusPart, IRegisterJMXYBusPart
-} from '../bus/bus_parts';
+} from '../bus/bus-parts';
 
 export interface IDisplayACard {
 

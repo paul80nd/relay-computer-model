@@ -1,7 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import * as sut from '../src/bit_value'
+import * as sut from '../src/bit-value'
 
 suite('bit-value', () => {
 

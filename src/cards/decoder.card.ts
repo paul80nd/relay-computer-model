@@ -1,8 +1,8 @@
 import { CardPart } from './card-part';
-import { BitValue } from '../bit_value';
-import { ICardWBusGroup } from '../bus/bus_groups';
-import { IInstructionBusPart } from '../bus/bus_parts';
-import { OperationLines } from '../bus/bus_part_lines';
+import { BitValue } from '../bit-value';
+import { ICardWBusGroup } from '../bus/bus-groups';
+import { IInstructionBusPart } from '../bus/bus-parts';
+import { OperationLines } from '../bus/bus-part-lines';
 
 export interface IDecoderCard {
 

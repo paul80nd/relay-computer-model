@@ -1,5 +1,5 @@
-import { BitValue } from '../bit_value';
-import { IDisplayBBusGroup } from '../bus/bus_groups';
+import { BitValue } from '../bit-value';
+import { IDisplayBBusGroup } from '../bus/bus-groups';
 
 export interface IDisplayBCard {
 

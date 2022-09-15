@@ -1,9 +1,9 @@
 import { CardPart } from './card-part';
-import { BitValue } from '../bit_value';
-import { ICardXBusGroup } from '../bus/bus_groups';
-import { I2BLines, RegAuxLines } from '../bus/bus_part_lines';
+import { BitValue } from '../bit-value';
+import { ICardXBusGroup } from '../bus/bus-groups';
+import { I2BLines, RegAuxLines } from '../bus/bus-part-lines';
 import { IRegisterCardPart, RegisterCardPart } from './parts/register.cardpart';
-import { IAddressBusPart, IDataBusPart, II2BBusPart, IInstructionBusPart } from '../bus/bus_parts';
+import { IAddressBusPart, IDataBusPart, II2BBusPart, IInstructionBusPart } from '../bus/bus-parts';
 
 export interface IIncrementerCard {
 

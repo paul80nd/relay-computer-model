@@ -1,4 +1,4 @@
-import { BitValue } from '../bit_value';
+import { BitValue } from '../bit-value';
 import { IObservable, Observable } from '../observable';
 import { CardPart } from '../cards/card-part';
 

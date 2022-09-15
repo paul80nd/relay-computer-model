@@ -1,12 +1,12 @@
 'use strict';
 
 import * as assert from 'assert';
-import { BitValue } from '../../src/bit_value';
+import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus_groups';
-import { BusPartFactory } from '../../src/bus/bus_parts';
-import { RegAuxLines } from '../../src/bus/bus_part_lines';
-import { CardFactory } from '../../src/card_factory';
+import { BusGroupFactory } from '../../src/bus/bus-groups';
+import { BusPartFactory } from '../../src/bus/bus-parts';
+import { RegAuxLines } from '../../src/bus/bus-part-lines';
+import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
 
 suite('card-register-pc', () => {
