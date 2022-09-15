@@ -5,6 +5,9 @@
   "main": "./lib/src/index.js",
   "typings": "./lib/src/index",
   "module": "./lib/src/index.js",
+  "files": [
+    "/lib/src"
+  ],
   "author": "Paul Law",
   "license": "MIT",
   "repository": {
