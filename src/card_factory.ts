@@ -1,22 +1,15 @@
-import { AuxControlCard, IAuxControlCard } from './aux_control.card';
-import { ControlCard, IControlCard } from './control.card';
-import { ControlSwitchesCard, IControlSwitchesCard } from './control_switches.card';
-import { DecoderCard, IDecoderCard } from './decoder.card';
-import { DisplayACard, IDisplayACard } from './display_a.card';
-import { DisplayBCard, IDisplayBCard } from './display_b.card';
-import { IIncrementerCard, IncrementerCard } from './incrementer.card';
-import { IMemoryCard, MemoryCard } from './memory.card';
-import { IRegisterADCard, RegisterADCard } from './register_ad.card';
-import { IRegisterBCCard, RegisterBCCard } from './register_bc.card';
-import { IRegisterICard, RegisterICard } from './register_i.card';
-import { IRegisterPCCard, RegisterPCCard } from './register_pc.card';
-import { AluLogicCard, IAluLogicCard } from './alu_logic.card';
-import { AluArithmeticCard, IAluArithmeticCard } from './alu_arithmetic.card';
-import { AluControlCard, IAluControlCard } from './alu_control.card';
-import { ISequencerCard, SequencerCard } from './sequencer.card';
-import { IRegisterJCard, RegisterJCard } from './register_j.card';
-import { IRegisterMCard, RegisterMCard } from './register_m.card';
-import { IRegisterXYCard, RegisterXYCard } from './register_xy.card';
+import {
+  AluArithmeticCard, AluControlCard, AluLogicCard, AuxControlCard,
+  ControlCard, ControlSwitchesCard, DecoderCard, DisplayACard,
+  DisplayBCard, IAluArithmeticCard, IAluControlCard, IAluLogicCard,
+  IAuxControlCard, IControlCard, IControlSwitchesCard, IDecoderCard,
+  IDisplayACard, IDisplayBCard, IIncrementerCard, IMemoryCard,
+  IncrementerCard, IRegisterADCard, IRegisterBCCard, IRegisterICard,
+  IRegisterJCard, IRegisterMCard, IRegisterPCCard, IRegisterXYCard,
+  ISequencerCard, MemoryCard, RegisterADCard, RegisterBCCard,
+  RegisterICard, RegisterJCard, RegisterMCard, RegisterPCCard,
+  RegisterXYCard, SequencerCard
+} from './cards';
 
 export interface ICardFactory {
   createAluArithmetic(): IAluArithmeticCard;
@@ -65,7 +58,8 @@ export class CardFactory implements ICardFactory {
       new AuxControlCard(),
       new ControlSwitchesCard(),
       new DisplayACard(),
-      new DisplayBCard());
+      new DisplayBCard()
+    );
   }
 
   createAluArithmetic(): IAluArithmeticCard { return new AluArithmeticCard(); }

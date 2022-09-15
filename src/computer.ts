@@ -5,7 +5,7 @@ import { IAuxControlCard } from './cards/aux_control.card';
 import { BusFactory } from './bus/bus';
 import { BusPartFactory } from './bus/bus_parts';
 import { BusGroupFactory } from './bus/bus_groups';
-import { CardFactory } from './cards/cards';
+import { CardFactory } from './card_factory';
 import {
   BackplaneFactory,
   IWBackplane, IXBackplane, IYBackplane, IZBackplane
