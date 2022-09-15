@@ -1,6 +1,5 @@
 'use strict';
 
-import * as assert from 'assert';
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -38,8 +37,8 @@ test('ld J1 J1 sel J', function () {
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
 
-  assert.ok(addrOut.value.isZero);
+  expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SEJ);
-  assert.equal(addrOut.value.toUnsignedNumber(), 0xabcd);
+  expect(addrOut.value.toUnsignedNumber()).toBe(0xabcd);
   ctrlIn.value = BitValue.Zero;
 });

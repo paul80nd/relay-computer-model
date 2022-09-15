@@ -1,6 +1,5 @@
 'use strict';
 
-import * as assert from 'assert';
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -32,9 +31,9 @@ test('ld sel M1', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM1);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0xdc);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
   ctrlIn.value = BitValue.Zero;
 });
 
@@ -43,9 +42,9 @@ test('ld sel M2', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM2);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0xbc);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
   ctrlIn.value = BitValue.Zero;
 });
 
@@ -54,11 +53,11 @@ test('ld clr M1', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM1);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0xba);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
 });
 
 test('ld clr M2', function () {
@@ -66,11 +65,11 @@ test('ld clr M2', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM2);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0x98);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0x98);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
 });
 
 test('ld M1 M2 sel M', function () {
@@ -84,8 +83,8 @@ test('ld M1 M2 sel M', function () {
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
 
-  assert.ok(addrOut.value.isZero);
+  expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SEM);
-  assert.equal(addrOut.value.toUnsignedNumber(), 0xabcd);
+  expect(addrOut.value.toUnsignedNumber()).toBe(0xabcd);
   ctrlIn.value = BitValue.Zero;
 });

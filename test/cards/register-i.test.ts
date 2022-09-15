@@ -1,6 +1,5 @@
 'use strict';
 
-import * as assert from 'assert';
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -32,7 +31,7 @@ test('lin', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.equal(instrOut.value.toUnsignedNumber(), 0xdc);
+  expect(instrOut.value.toUnsignedNumber()).toBe(0xdc);
 });
 
 test('i2b', function () {
@@ -40,11 +39,11 @@ test('i2b', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.equal(instrOut.value.toUnsignedNumber(), 0b01101011);
-  assert.ok(dataOut.value.isZero);
+  expect(instrOut.value.toUnsignedNumber()).toBe(0b01101011);
+  expect(dataOut.value.isZero);
   ctrlIn2.value = BitValue.Zero.flipBit(I2BLines.I2B);
-  assert.equal(instrOut.value.toUnsignedNumber(), 0b01101011);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0b00001011);
+  expect(instrOut.value.toUnsignedNumber()).toBe(0b01101011);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0b00001011);
   ctrlIn2.value = BitValue.Zero;
 });
 
@@ -53,10 +52,10 @@ test('i2b sign ext', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.equal(instrOut.value.toUnsignedNumber(), 0b01011010);
-  assert.ok(dataOut.value.isZero);
+  expect(instrOut.value.toUnsignedNumber()).toBe(0b01011010);
+  expect(dataOut.value.isZero);
   ctrlIn2.value = BitValue.Zero.flipBit(I2BLines.I2B);
-  assert.equal(instrOut.value.toUnsignedNumber(), 0b01011010);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0b11111010);
+  expect(instrOut.value.toUnsignedNumber()).toBe(0b01011010);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0b11111010);
   ctrlIn2.value = BitValue.Zero;
 });

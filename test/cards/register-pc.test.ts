@@ -1,6 +1,5 @@
 'use strict';
 
-import * as assert from 'assert';
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -29,9 +28,9 @@ test('ld sel', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
   ctrlIn.value = BitValue.Zero;
   addrIn.value = BitValue.Zero;
-  assert.ok(addrOut.value.isZero);
+  expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SPC);
-  assert.equal(addrOut.value.toUnsignedNumber(), 0xdcba);
+  expect(addrOut.value.toUnsignedNumber()).toBe(0xdcba);
 });
 
 test('ld clr', function () {
@@ -39,9 +38,9 @@ test('ld clr', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
   ctrlIn.value = BitValue.Zero;
   addrIn.value = BitValue.Zero;
-  assert.ok(addrOut.value.isZero);
+  expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SPC);
-  assert.equal(addrOut.value.toUnsignedNumber(), 0xabcd);
+  expect(addrOut.value.toUnsignedNumber()).toBe(0xabcd);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
-  assert.ok(addrOut.value.isZero);
+  expect(addrOut.value.isZero);
 });

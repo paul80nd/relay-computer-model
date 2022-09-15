@@ -1,6 +1,5 @@
 'use strict';
 
-import * as assert from 'assert';
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -29,9 +28,9 @@ test('ld sel A', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSA);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0xdc);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
 });
 
 test('ld sel D', function () {
@@ -39,9 +38,9 @@ test('ld sel D', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSD);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0xbc);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
 });
 
 test('ld clr A', function () {
@@ -49,11 +48,11 @@ test('ld clr A', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSA);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0xba);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
 });
 
 test('ld clr D', function () {
@@ -61,9 +60,9 @@ test('ld clr D', function () {
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
   ctrlIn.value = BitValue.Zero;
   dataIn.value = BitValue.Zero;
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSD);
-  assert.equal(dataOut.value.toUnsignedNumber(), 0x98);
+  expect(dataOut.value.toUnsignedNumber()).toBe(0x98);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
-  assert.ok(dataOut.value.isZero);
+  expect(dataOut.value.isZero);
 });
