@@ -15,9 +15,8 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "prepublishOnly": "npm run clean && npm run compile && npm run compile-esm && npm run test",
+    "prepublishOnly": "npm run clean && npm run compile && npm run test",
     "compile": "tsc -p . && npm run lint",
-    "compile-esm": "tsc -p ./tsconfig.esm.json",
     "clean": "rimraf lib",
     "test": "npm run compile && mocha ./lib/umd/test/**/*.js",
     "lint": "eslint src/**/*.ts & eslint test/**/*.ts",
