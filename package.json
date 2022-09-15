@@ -23,9 +23,6 @@
     "lint": "eslint src/**/*.ts & eslint test/**/*.ts",
     "watch": "tsc --watch -p ."
   },
-  "dependencies": {
-    "fastbitset": "^0.2.8"
-  },
   "devDependencies": {
     "@types/mocha": "^9.1.0",
     "@types/node": "^17.0.23",
