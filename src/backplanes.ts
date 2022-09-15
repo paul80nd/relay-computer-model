@@ -1,20 +1,20 @@
-import { IAluArithmeticCard } from './cards/alu_arithmetic.card';
-import { IAluControlCard } from './cards/alu_control.card';
-import { IAluLogicCard } from './cards/alu_logic.card';
+import { IAluArithmeticCard } from './cards/alu-arithmetic.card';
+import { IAluControlCard } from './cards/alu-control.card';
+import { IAluLogicCard } from './cards/alu-logic.card';
 import { IControlCard } from './cards/control.card';
 import { IDecoderCard } from './cards/decoder.card';
 import { IIncrementerCard } from './cards/incrementer.card';
 import { IMemoryCard } from './cards/memory.card';
-import { IRegisterADCard } from './cards/register_ad.card';
-import { IRegisterBCCard } from './cards/register_bc.card';
-import { IRegisterICard } from './cards/register_i.card';
-import { IRegisterPCCard } from './cards/register_pc.card';
+import { IRegisterADCard } from './cards/register-ad.card';
+import { IRegisterBCCard } from './cards/register-bc.card';
+import { IRegisterICard } from './cards/register-i.card';
+import { IRegisterPCCard } from './cards/register-pc.card';
 import { ISequencerCard } from './cards/sequencer.card';
 import { ICardWBusGroup, ICardXBusGroup, ICardYBusGroup, ICardZBusGroup } from './bus/bus_groups';
 import { ICardFactory } from './card_factory';
-import { IRegisterMCard } from './cards/register_m.card';
-import { IRegisterXYCard } from './cards/register_xy.card';
-import { IRegisterJCard } from './cards/register_j.card';
+import { IRegisterMCard } from './cards/register-m.card';
+import { IRegisterXYCard } from './cards/register-xy.card';
+import { IRegisterJCard } from './cards/register-j.card';
 
 export interface IBackplaneFactory {
   createWBackplane(): IWBackplane;

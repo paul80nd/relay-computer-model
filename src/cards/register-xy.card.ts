@@ -1,6 +1,6 @@
 import { ICardYBusGroup } from '../bus/bus_groups';
 import { RegJMXYLines } from '../bus/bus_part_lines';
-import { IRegisterYCardPart, RegisterYCardPart } from './parts/register_y.cardpart';
+import { IRegisterYCardPart, RegisterYCardPart } from './parts/register-y.cardpart';
 
 export interface IRegisterXYCard {
 

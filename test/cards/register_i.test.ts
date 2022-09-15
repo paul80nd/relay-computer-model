@@ -7,7 +7,7 @@ import { BusGroupFactory } from '../../src/bus/bus_groups';
 import { BusPartFactory } from '../../src/bus/bus_parts';
 import { I2BLines, RegAuxLines } from '../../src/bus/bus_part_lines';
 import { CardFactory } from '../../src/card_factory';
-import { CardPart } from '../../src/cards/card_part';
+import { CardPart } from '../../src/cards/card-part';
 
 suite('card-register-i', () => {
 

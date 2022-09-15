@@ -1,6 +1,6 @@
 import { BitValue } from '../bit_value';
 import { IObservable, Observable } from '../observable';
-import { CardPart } from '../cards/card_part';
+import { CardPart } from '../cards/card-part';
 
 /**
  * A bus part represents a number of related lines/wires which carry

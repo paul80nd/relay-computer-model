@@ -1,7 +1,7 @@
-import { IDisplayACard } from './cards/display_a.card';
-import { IDisplayBCard } from './cards/display_b.card';
-import { IControlSwitchesCard } from './cards/control_switches.card';
-import { IAuxControlCard } from './cards/aux_control.card';
+import { IDisplayACard } from './cards/display-a.card';
+import { IDisplayBCard } from './cards/display-b.card';
+import { IControlSwitchesCard } from './cards/control-switches.card';
+import { IAuxControlCard } from './cards/aux-control.card';
 import { BusFactory } from './bus/bus';
 import { BusPartFactory } from './bus/bus_parts';
 import { BusGroupFactory } from './bus/bus_groups';

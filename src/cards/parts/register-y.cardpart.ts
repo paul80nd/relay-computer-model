@@ -1,5 +1,5 @@
 import { BitValue } from '../../bit_value';
-import { CardPart } from '../card_part';
+import { CardPart } from '../card-part';
 import { IBusPart, IDataBusPart, IRegisterABCDBusPart, IAddressBusPart } from '../../bus/bus_parts';
 
 export interface IRegisterYCardPart {

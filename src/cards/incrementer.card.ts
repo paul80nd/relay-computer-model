@@ -1,4 +1,4 @@
-import { CardPart } from '../cards/card_part';
+import { CardPart } from './card-part';
 import { BitValue } from '../bit_value';
 import { ICardXBusGroup } from '../bus/bus_groups';
 import { I2BLines, RegAuxLines } from '../bus/bus_part_lines';

@@ -1,5 +1,5 @@
 import { BitValue } from '../bit_value';
-import { CardPart } from '../cards/card_part';
+import { CardPart } from './card-part';
 import { IControlSwitchesBusGroup } from '../bus/bus_groups';
 import { ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus_part_lines';
 

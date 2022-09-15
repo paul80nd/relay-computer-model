@@ -1,5 +1,5 @@
 import { BitValue } from '../bit_value';
-import { CardPart } from '../cards/card_part';
+import { CardPart } from './card-part';
 import { ICardZBusGroup } from '../bus/bus_groups';
 import { IAluOperationBusPart, IDataBusPart } from '../bus/bus_parts';
 import { AluOperationLines } from '../bus/bus_part_lines';

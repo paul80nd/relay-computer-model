@@ -1,4 +1,4 @@
-import { CardPart } from './card_part';
+import { CardPart } from './card-part';
 import { BitValue } from '../bit_value';
 import { IDisplayABusGroup } from '../bus/bus_groups';
 import {
