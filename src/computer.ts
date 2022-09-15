@@ -1,15 +1,9 @@
-import { IDisplayACard } from './cards/display-a.card';
-import { IDisplayBCard } from './cards/display-b.card';
-import { IControlSwitchesCard } from './cards/control-switches.card';
-import { IAuxControlCard } from './cards/aux-control.card';
+import { BackplaneFactory, IWBackplane, IXBackplane, IYBackplane, IZBackplane } from './backplanes';
 import { BusFactory } from './bus/bus';
-import { BusPartFactory } from './bus/bus-parts';
 import { BusGroupFactory } from './bus/bus-groups';
+import { BusPartFactory } from './bus/bus-parts';
 import { CardFactory } from './card-factory';
-import {
-  BackplaneFactory,
-  IWBackplane, IXBackplane, IYBackplane, IZBackplane
-} from './backplanes';
+import { IAuxControlCard, IControlSwitchesCard, IDisplayACard, IDisplayBCard } from './cards';
 
 export interface IComputer {
   controlSwitchesCard: IControlSwitchesCard;
