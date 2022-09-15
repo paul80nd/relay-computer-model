@@ -2,9 +2,9 @@
   "name": "@paul80nd/relay-computer-model",
   "version": "1.0.0",
   "description": "Relay Computer Model",
-  "main": "./lib/umd/src/index.js",
-  "typings": "./lib/umd/src/index",
-  "module": "./lib/esm/src/index.js",
+  "main": "./lib/src/index.js",
+  "typings": "./lib/src/index",
+  "module": "./lib/src/index.js",
   "author": "Paul Law",
   "license": "MIT",
   "repository": {

@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es5",
-		"module": "umd",
+    "target": "ES2017",
+		"module": "ES2020",
 		"moduleResolution": "node",
     "removeComments": true,
     "declaration": true,
     "preserveConstEnums": true,
-    "outDir": "lib/umd",
+    "outDir": "lib",
     "sourceMap": true,
     "allowJs": true,
     "noImplicitAny": true,
+    "strictBindCallApply": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
     "noImplicitThis": true,
+    "strict": true,
     "alwaysStrict": true,
     "noImplicitReturns": true,
     "stripInternal": true,
-    "downlevelIteration": true,
-    "lib": [
-			"es5", "es2015.promise"
-		]
+    "downlevelIteration": true
   },
   "include": [
     "src/**/*.ts",
