@@ -1,5 +1,3 @@
-'use strict';
-
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -7,6 +5,7 @@ import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegABCDLines } from '../../src/bus/bus-part-lines';
 import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
+import { clearLines, setValue } from './helpers';
 
 const bf = new BusFactory(new BusPartFactory());
 const bgf = new BusGroupFactory(bf);
@@ -24,30 +23,27 @@ bgs.z.controlZBus.regABCDPart.connect(ctrlIn);
 const dataOut = bgs.z.dataControlBus.dataPart;
 
 test('ld sel A', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xdc);
+  setValue(dataIn, 0xdc);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn, dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSA);
   expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
 });
 
 test('ld sel D', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xbc);
+  setValue(dataIn, 0xbc);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn, dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSD);
   expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
 });
 
 test('ld clr A', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xba);
+  setValue(dataIn, 0xba);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn, dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSA);
   expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
@@ -56,10 +52,9 @@ test('ld clr A', function () {
 });
 
 test('ld clr D', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0x98);
+  setValue(dataIn, 0x98);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn, dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSD);
   expect(dataOut.value.toUnsignedNumber()).toBe(0x98);

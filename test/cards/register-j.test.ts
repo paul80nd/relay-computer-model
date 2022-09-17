@@ -7,6 +7,7 @@ import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegJMXYLines } from '../../src/bus/bus-part-lines';
 import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
+import { clearLines, setValue } from './helpers';
 
 const bf = new BusFactory(new BusPartFactory());
 const bgf = new BusGroupFactory(bf);
@@ -26,18 +27,18 @@ bgs.y.controlYBus.regJMXYPart.connect(ctrlIn);
 const addrOut = bgs.y.addressBus.addressPart;
 
 test('ld J1 J1 sel J', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xab);
+  setValue(dataIn, 0xab);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LJ1);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   dataIn.value = BitValue.Zero;
 
-  dataIn.value = BitValue.fromUnsignedNumber(0xcd);
+  setValue(dataIn, 0xcd);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LJ2);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   dataIn.value = BitValue.Zero;
 
   expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SEJ);
   expect(addrOut.value.toUnsignedNumber()).toBe(0xabcd);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
 });

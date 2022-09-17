@@ -7,6 +7,7 @@ import { BusPartFactory } from '../../src/bus/bus-parts';
 import { I2BLines, RegAuxLines } from '../../src/bus/bus-part-lines';
 import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
+import { clearLines, setValue } from './helpers';
 
 const bf = new BusFactory(new BusPartFactory());
 const bgf = new BusGroupFactory(bf);
@@ -27,17 +28,17 @@ const instrOut = bgs.x.dataInstructionBus.instructionPart;
 const dataOut = bgs.x.dataInstructionBus.dataPart;
 
 test('lin', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xdc);
+  setValue(dataIn, 0xdc);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   dataIn.value = BitValue.Zero;
   expect(instrOut.value.toUnsignedNumber()).toBe(0xdc);
 });
 
 test('i2b', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0b01101011);
+  setValue(dataIn, 0b01101011);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   dataIn.value = BitValue.Zero;
   expect(instrOut.value.toUnsignedNumber()).toBe(0b01101011);
   expect(dataOut.value.isZero);
@@ -48,9 +49,9 @@ test('i2b', function () {
 });
 
 test('i2b sign ext', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0b01011010);
+  setValue(dataIn, 0b01011010);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   dataIn.value = BitValue.Zero;
   expect(instrOut.value.toUnsignedNumber()).toBe(0b01011010);
   expect(dataOut.value.isZero);

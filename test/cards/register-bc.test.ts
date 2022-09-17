@@ -7,6 +7,7 @@ import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegABCDLines } from '../../src/bus/bus-part-lines';
 import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
+import { clearLines } from './helpers';
 
 const bf = new BusFactory(new BusPartFactory());
 const bgf = new BusGroupFactory(bf);
@@ -28,8 +29,7 @@ const cOut = bgs.z.registerBCBus.registerCPart;
 test('ld sel B', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xdc);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
   expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
@@ -38,8 +38,7 @@ test('ld sel B', function () {
 test('ld sel C', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xbc);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
   expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
@@ -48,8 +47,7 @@ test('ld sel C', function () {
 test('ld clr B', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xba);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
   expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
@@ -60,8 +58,7 @@ test('ld clr B', function () {
 test('ld clr C', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0x98);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(dataOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
   expect(dataOut.value.toUnsignedNumber()).toBe(0x98);
@@ -72,8 +69,7 @@ test('ld clr C', function () {
 test('ld sel B bus', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xdc);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(bOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
   expect(bOut.value.toUnsignedNumber()).toBe(0xdc);
@@ -82,8 +78,7 @@ test('ld sel B bus', function () {
 test('ld sel C bus', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xbc);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(cOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
   expect(cOut.value.toUnsignedNumber()).toBe(0xbc);
@@ -92,8 +87,7 @@ test('ld sel C bus', function () {
 test('ld clr B bus', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xba);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(bOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
   expect(bOut.value.toUnsignedNumber()).toBe(0xba);
@@ -104,8 +98,7 @@ test('ld clr B bus', function () {
 test('ld clr C bus', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0x98);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  clearLines(ctrlIn,dataIn);
   expect(cOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
   expect(cOut.value.toUnsignedNumber()).toBe(0x98);

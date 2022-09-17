@@ -1,5 +1,17 @@
-import { BitValue } from "../../src";
+import { BitValue, CardPart } from "../../src";
 import { IBusPart } from "../../src/bus/bus-parts";
+
+export function setValue(part: CardPart, value: number) {
+  part.value = BitValue.fromUnsignedNumber(value);
+}
+
+export function setLines(part: CardPart, ...linesToSet: number[]) {
+  part.value = linesToSet.reduce((p, c) => p.flipBit(c), BitValue.Zero);
+}
+
+export function clearLines(... parts: CardPart[]) {
+  parts.forEach(p => p.value = BitValue.Zero);
+}
 
 export function expectPart(actual: IBusPart): ElementExpect {
   return expect(actual) as unknown as ElementExpect

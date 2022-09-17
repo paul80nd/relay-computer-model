@@ -1,5 +1,3 @@
-'use strict';
-
 import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
@@ -7,6 +5,7 @@ import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegAuxLines } from '../../src/bus/bus-part-lines';
 import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
+import { clearLines, setValue } from './helpers';
 
 const bf = new BusFactory(new BusPartFactory());
 const bgf = new BusGroupFactory(bf);
@@ -24,9 +23,9 @@ bgs.x.controlXBus.auxRegisterPart.connect(ctrlIn);
 const addrOut = bgs.x.addressBus.addressPart;
 
 test('ld sel', function () {
-  addrIn.value = BitValue.fromUnsignedNumber(0xdcba);
+  setValue(addrIn, 0xdcba);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   addrIn.value = BitValue.Zero;
   expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SPC);
@@ -34,9 +33,9 @@ test('ld sel', function () {
 });
 
 test('ld clr', function () {
-  addrIn.value = BitValue.fromUnsignedNumber(0xabcd);
+  setValue(addrIn, 0xabcd);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
-  ctrlIn.value = BitValue.Zero;
+  clearLines(ctrlIn);
   addrIn.value = BitValue.Zero;
   expect(addrOut.value.isZero);
   ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SPC);
