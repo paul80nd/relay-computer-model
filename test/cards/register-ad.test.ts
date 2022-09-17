@@ -1,63 +1,51 @@
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegABCDLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
-import { clearLines, setValue } from './helpers';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const ctrl = new LinesPart;
+const data = new ValuePart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createRegisterAD();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.z);
-
-const dataIn = new CardPart();
-const ctrlIn = new CardPart();
-bgs.z.dataControlBus.dataPart.connect(dataIn);
-bgs.z.controlZBus.regABCDPart.connect(ctrlIn);
-
-const dataOut = bgs.z.dataControlBus.dataPart;
+ctrl.connectOn(bgs.z.controlZBus.regABCDPart);
+data.connectOn(bgs.z.dataControlBus.dataPart);
 
 test('ld sel A', function () {
-  setValue(dataIn, 0xdc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
-  clearLines(ctrlIn, dataIn);
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSA);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
+  data.set(0xdc);
+  ctrl.flick(RegABCDLines.RLA);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSA);
+  data.expect().toBe(0xdc);
 });
 
 test('ld sel D', function () {
-  setValue(dataIn, 0xbc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
-  clearLines(ctrlIn, dataIn);
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSD);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
+  data.set(0xbc);
+  ctrl.flick(RegABCDLines.RLD);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSD);
+  data.expect().toBe(0xbc);
 });
 
 test('ld clr A', function () {
-  setValue(dataIn, 0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
-  clearLines(ctrlIn, dataIn);
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSA);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLA);
-  expect(dataOut.value.isZero);
+  data.set(0xba);
+  ctrl.flick(RegABCDLines.RLA);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSA);
+  data.expect().toBe(0xba);
+  ctrl.set(RegABCDLines.RLA);
+  data.expect().toBe(0);
 });
 
 test('ld clr D', function () {
-  setValue(dataIn, 0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
-  clearLines(ctrlIn, dataIn);
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSD);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLD);
-  expect(dataOut.value.isZero);
+  data.set(0x98);
+  ctrl.flick(RegABCDLines.RLD);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSD);
+  data.expect().toBe(0x98);
+  ctrl.set(RegABCDLines.RLD);
+  data.expect().toBe(0);
 });

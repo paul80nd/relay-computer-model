@@ -1,45 +1,36 @@
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { MemoryLines, PulseLines, RegAuxLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
-import { expectPart, setLines } from './helpers';
+import { expectPart, LinesPart, TestFactory } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const pulse = new LinesPart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createControl();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.w);
-
-const pulseIn = new CardPart();
-bgs.w.pulseBus.pulsePart.connect(pulseIn);
+pulse.connectOn(bgs.w.pulseBus.pulsePart);
 
 const xbus = bgs.w.controlXBus;
 const ybus = bgs.w.controlYBus;
 
 test('fetch inc cycle A', function () {
-  setLines(pulseIn, PulseLines.A);
+  pulse.set(PulseLines.A);
   expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.SPC);
   expectPart(ybus.memoryPart).hasLinesSet(MemoryLines.MER);
 });
 
 test('fetch inc cycle B', function () {
-  setLines(pulseIn, PulseLines.B);
+  pulse.set(PulseLines.B);
   expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.LIC, RegAuxLines.LIN);
   expectPart(ybus.memoryPart).hasLinesSet();
 });
 
 test('fetch inc cycle C', function () {
-  setLines(pulseIn, PulseLines.C);
+  pulse.set(PulseLines.C);
   expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.SIC);
   expectPart(ybus.memoryPart).hasLinesSet();
 });
 
 test('fetch inc cycle D', function () {
-  setLines(pulseIn, PulseLines.D);
+  pulse.set(PulseLines.D);
   expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.LPC);
   expectPart(ybus.memoryPart).hasLinesSet();
 });

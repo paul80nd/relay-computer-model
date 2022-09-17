@@ -1,54 +1,45 @@
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { AbortLines, AluFunctionClLines, OperationLines, PulseLines, RegABCDLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
-import { expectPart, setLines, setValue } from './helpers';
+import { expectPart, LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const op = new LinesPart;
+const inst = new ValuePart;
+const pulse = new LinesPart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createControl();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.w);
-
-const opIn = new CardPart();
-const instIn = new CardPart();
-const pulseIn = new CardPart();
-bgs.w.operationBus.operationPart.connect(opIn);
-bgs.w.controlInstructionBus.instructionPart.connect(instIn);
-bgs.w.pulseBus.pulsePart.connect(pulseIn);
+op.connectOn(bgs.w.operationBus.operationPart);
+inst.connectOn(bgs.w.controlInstructionBus.instructionPart)
+pulse.connectOn(bgs.w.pulseBus.pulsePart);
 
 const zbus = bgs.w.controlZBus;
 const cibus = bgs.w.controlInstructionBus;
 const opbus = bgs.w.operationBus;
 
-setLines(opIn, OperationLines.IALU);
+op.set(OperationLines.IALU);
 
 test('alu D', function () {
-  setValue(instIn, 0b10001111);
-  setLines(pulseIn, PulseLines.D);
+  inst.set(0b10001111);
+  pulse.set(PulseLines.D);
   expectPart(zbus.regABCDPart).hasLinesSet(RegABCDLines.RLD);
   expectPart(opbus.abortPart).hasLinesSet(AbortLines.AT08);
   expectPart(cibus.aluFunctionClPart).hasLinesSet(AluFunctionClLines.CL);
 });
 
 test('alu E', function () {
-  setValue(instIn, 0b10001111);
-  setLines(pulseIn, PulseLines.E);
+  inst.set(0b10001111);
+  pulse.set(PulseLines.E);
   expectPart(zbus.regABCDPart).hasLinesSet();
   expectPart(opbus.abortPart).hasLinesSet();
   expectPart(cibus.aluFunctionClPart).hasLinesSet(AluFunctionClLines.F0, AluFunctionClLines.F1, AluFunctionClLines.F2);
 });
 
 test('alu dest', function () {
-  setLines(pulseIn, PulseLines.D);
-  setValue(instIn, 0b10001111);
+  pulse.set(PulseLines.D);
+  inst.set(0b10001111);
   expectPart(zbus.regABCDPart).hasLinesSet(RegABCDLines.RLD);
 
-  setValue(instIn, 0b10000111)
+  inst.set(0b10000111)
   expectPart(zbus.regABCDPart).hasLinesSet(RegABCDLines.RLA);
 });
 //   private updateAlu() {

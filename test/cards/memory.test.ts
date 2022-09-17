@@ -1,78 +1,77 @@
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { MemoryLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
-import { clearLines, setValue } from './helpers';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const addr = new ValuePart;
+const ctrl = new LinesPart;
+const data = new ValuePart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createMemory();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.y);
-
-const addrIn = new CardPart();
-const dataIn = new CardPart();
-const memCtrl = new CardPart();
-bgs.y.addressBus.addressPart.connect(addrIn);
-bgs.y.dataControlBus.dataPart.connect(dataIn);
-bgs.y.controlYBus.memoryPart.connect(memCtrl);
-
-const dataOut = bgs.y.dataControlBus.dataPart;
+addr.connectOn(bgs.y.addressBus.addressPart);
+ctrl.connectOn(bgs.y.controlYBus.memoryPart);
+data.connectOn(bgs.y.dataControlBus.dataPart);
 
 test('write read', function () {
-  setValue(addrIn, 0x7ca9);
-  setValue(dataIn, 0xed);
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.B2M).flipBit(MemoryLines.MEW);
-  clearLines(memCtrl, dataIn);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.MER);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xed);
-  clearLines(memCtrl);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
+  addr.set(0x7ca9);
+  data.set(0xed);
+  ctrl.flick(MemoryLines.B2M, MemoryLines.MEW);
+  data.clear();
+  data.expect().toBe(0);
+
+  ctrl.set(MemoryLines.MER);
+  data.expect().toBe(0xed);
+
+  ctrl.clear();
+  data.expect().toBe(0);
 });
 
 test('beyond range', function () {
-  setValue(addrIn, 0xeca9); // Address beyond memory
-  setValue(dataIn, 0xed);
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.B2M).flipBit(MemoryLines.MEW);
-  clearLines(memCtrl, dataIn);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.MER);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00); // so no value stored
-  clearLines(memCtrl);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
+  addr.set(0xeca9); // Address beyond memory
+  data.set(0xed);
+  ctrl.flick(MemoryLines.B2M, MemoryLines.MEW);
+  data.clear();
+  data.expect().toBe(0);
+
+  ctrl.set(MemoryLines.MER);
+  data.expect().toBe(0); // so no value stored
+
+  ctrl.clear();
+  data.expect().toBe(0);
 });
 
 test('disable', function () {
-  setValue(addrIn, 0x7ca9);
-  setValue(dataIn, 0xed);
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.B2M).flipBit(MemoryLines.MEW);
-  clearLines(memCtrl, dataIn);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.MER);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xed);
+  addr.set(0x7ca9);
+  data.set(0xed);
+  ctrl.flick(MemoryLines.B2M, MemoryLines.MEW);
+  data.clear();
+  data.expect().toBe(0);
+
+  ctrl.set(MemoryLines.MER);
+  data.expect().toBe(0xed);
+
   card.toggleEnabled()
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
+  data.expect().toBe(0);
+
   card.toggleEnabled()
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xed);
-  clearLines(memCtrl);
+  data.expect().toBe(0xed);
+
+  ctrl.clear();
 });
 
 test('load prog', function () {
   card.loadProgram(0x1234, [0x12, 0xab, 0xfe]);
 
-  memCtrl.value = BitValue.Zero.flipBit(MemoryLines.MER);
-  setValue(addrIn, 0x1234);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x12);
-  setValue(addrIn, 0x1235);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xab);
-  setValue(addrIn, 0x1236);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xfe);
-  clearLines(memCtrl);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x00);
+  ctrl.set(MemoryLines.MER);
+  addr.set(0x1234);
+  data.expect().toBe(0x12);
+
+  addr.set(0x1235);
+  data.expect().toBe(0xab);
+
+  addr.set(0x1236);
+  data.expect().toBe(0xfe);
+
+  ctrl.clear();
+  data.expect().toBe(0x00);
 });

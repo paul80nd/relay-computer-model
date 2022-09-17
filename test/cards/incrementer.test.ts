@@ -1,45 +1,33 @@
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegAuxLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
-import { clearLines, setValue } from './helpers';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const addr = new ValuePart;
+const ctrl = new LinesPart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createIncrementer();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.x);
-
-const addrIn = new CardPart();
-const ctrlIn = new CardPart();
-bgs.x.addressBus.addressPart.connect(addrIn);
-bgs.x.controlXBus.auxRegisterPart.connect(ctrlIn);
-
-const addrOut = bgs.y.addressBus.addressPart;
+addr.connectOn(bgs.x.addressBus.addressPart);
+ctrl.connectOn(bgs.x.controlXBus.auxRegisterPart);
 
 test('inc ld sel', function () {
-  setValue(addrIn, 0xabcd);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIC);
-  clearLines(ctrlIn, addrIn);
+  addr.set(0xabcd);
+  ctrl.flick(RegAuxLines.LIC);
+  addr.clear();
+  addr.expect().toBe(0);
 
-  expect(addrOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SIC);
-  expect(addrOut.value.toUnsignedNumber()).toBe(0xabce); // one higher
-  clearLines(ctrlIn);
+  ctrl.set(RegAuxLines.SIC);
+  addr.expect().toBe(0xabce); // one higher
+  ctrl.clear();
 });
 
 test('inc overflow ld sel', function () {
-  setValue(addrIn, 0xffff);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIC);
-  clearLines(ctrlIn, addrIn);
+  addr.set(0xffff);
+  ctrl.flick(RegAuxLines.LIC);
+  addr.clear();
+  addr.expect().toBe(0);
 
-  expect(addrOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SIC);
-  expect(addrOut.value.toUnsignedNumber()).toBe(0x0); // overflowed
-  clearLines(ctrlIn);
+  ctrl.set(RegAuxLines.SIC);
+  addr.expect().toBe(0); // overflowed
+  ctrl.clear();
 });

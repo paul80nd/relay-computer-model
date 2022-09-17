@@ -1,45 +1,31 @@
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegAuxLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
-import { clearLines, setValue } from './helpers';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const addr = new ValuePart;
+const ctrl = new LinesPart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createRegisterPC();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.x);
-
-const addrIn = new CardPart();
-const ctrlIn = new CardPart();
-bgs.x.addressBus.addressPart.connect(addrIn);
-bgs.x.controlXBus.auxRegisterPart.connect(ctrlIn);
-
-const addrOut = bgs.x.addressBus.addressPart;
+addr.connectOn(bgs.x.addressBus.addressPart);
+ctrl.connectOn(bgs.x.controlXBus.auxRegisterPart);
 
 test('ld sel', function () {
-  setValue(addrIn, 0xdcba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
-  clearLines(ctrlIn);
-  addrIn.value = BitValue.Zero;
-  expect(addrOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SPC);
-  expect(addrOut.value.toUnsignedNumber()).toBe(0xdcba);
+  addr.set(0xdcba);
+  ctrl.flick(RegAuxLines.LPC);
+  addr.clear();
+  addr.expect().toBe(0);
+  ctrl.set(RegAuxLines.SPC);
+  addr.expect().toBe(0xdcba);
 });
 
 test('ld clr', function () {
-  setValue(addrIn, 0xabcd);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
-  clearLines(ctrlIn);
-  addrIn.value = BitValue.Zero;
-  expect(addrOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.SPC);
-  expect(addrOut.value.toUnsignedNumber()).toBe(0xabcd);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LPC);
-  expect(addrOut.value.isZero);
+  addr.set(0xabcd);
+  ctrl.flick(RegAuxLines.LPC);
+  addr.clear();
+  addr.expect().toBe(0);
+  ctrl.set(RegAuxLines.SPC);
+  addr.expect().toBe(0xabcd);
+  ctrl.set(RegAuxLines.LPC);
+  addr.expect().toBe(0);
 });
