@@ -1,61 +1,46 @@
-'use strict';
-
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { I2BLines, RegAuxLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const ctrl = new LinesPart;
+const ctrlI2B = new LinesPart;
+const data = new ValuePart;
+const inst = new ValuePart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createRegisterI();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.x);
-
-const dataIn = new CardPart();
-const ctrlIn = new CardPart();
-const ctrlIn2 = new CardPart();
-bgs.x.dataInstructionBus.dataPart.connect(dataIn);
-bgs.x.controlXBus.auxRegisterPart.connect(ctrlIn);
-bgs.x.controlXBus.i2bPart.connect(ctrlIn2);
-
-const instrOut = bgs.x.dataInstructionBus.instructionPart;
-const dataOut = bgs.x.dataInstructionBus.dataPart;
+ctrl.connectOn(bgs.x.controlXBus.auxRegisterPart);
+ctrlI2B.connectOn(bgs.x.controlXBus.i2bPart);
+data.connectOn(bgs.x.dataInstructionBus.dataPart);
+inst.connectOn(bgs.x.dataInstructionBus.instructionPart);
 
 test('lin', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xdc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(instrOut.value.toUnsignedNumber()).toBe(0xdc);
+  data.set(0xdc);
+  ctrl.flick(RegAuxLines.LIN);
+  data.clear();
+  inst.expect().toBe(0xdc);
 });
 
 test('i2b', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0b01101011);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(instrOut.value.toUnsignedNumber()).toBe(0b01101011);
-  expect(dataOut.value.isZero);
-  ctrlIn2.value = BitValue.Zero.flipBit(I2BLines.I2B);
-  expect(instrOut.value.toUnsignedNumber()).toBe(0b01101011);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0b00001011);
-  ctrlIn2.value = BitValue.Zero;
+  data.set(0b01101011);
+  ctrl.flick(RegAuxLines.LIN);
+  data.clear();
+  inst.expect().toBe(0b01101011);
+  data.expect().toBe(0);
+  ctrlI2B.set(I2BLines.I2B);
+  inst.expect().toBe(0b01101011);
+  data.expect().toBe(0b00001011);
+  ctrlI2B.clear();
 });
 
 test('i2b sign ext', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0b01011010);
-  ctrlIn.value = BitValue.Zero.flipBit(RegAuxLines.LIN);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(instrOut.value.toUnsignedNumber()).toBe(0b01011010);
-  expect(dataOut.value.isZero);
-  ctrlIn2.value = BitValue.Zero.flipBit(I2BLines.I2B);
-  expect(instrOut.value.toUnsignedNumber()).toBe(0b01011010);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0b11111010);
-  ctrlIn2.value = BitValue.Zero;
+  data.set(0b01011010);
+  ctrl.flick(RegAuxLines.LIN);
+  data.clear();
+  inst.expect().toBe(0b01011010);
+  data.expect().toBe(0);
+  ctrlI2B.set(I2BLines.I2B);
+  inst.expect().toBe(0b01011010);
+  data.expect().toBe(0b11111010);
+  ctrlI2B.clear();
 });

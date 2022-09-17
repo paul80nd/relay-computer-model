@@ -19,7 +19,7 @@ export class SequencerCard implements ISequencerCard {
   fsm: BitValue;
   pulse: BitValue;
 
-  private lastClock: boolean = false;
+  private lastClock = false;
 
   private pulseOut: CardPart;
 
@@ -47,7 +47,7 @@ export class SequencerCard implements ISequencerCard {
   }
 
   private reset = () => {
-    const reset = this.resetPart!.value.bit(ResetLines.RES);
+    const reset = this.resetPart?.value.bit(ResetLines.RES) ?? false;
     if (reset) {
       if (!this.fsm.bit(0) && !this.fsm.bit(1) && !this.fsm.bit(2)) {
         this.fsm = this.fsm.flipBit(0);
@@ -65,30 +65,32 @@ export class SequencerCard implements ISequencerCard {
   };
 
   private clock = () => {
-    const clock = this.clockPart!.value.bit(ClockLines.CLK);
-    if (clock !== this.lastClock) {
-      this.lastClock = clock;
-      this.fsm = this.fsm.shiftLeft(24);
-      if (this.fsm.bit(15) && this.abort.bit(AbortLines.AT14)) {
-        this.fsm = this.fsm.flipBit(15);
-        this.fsm = this.fsm.flipBit(0);
+    if (this.clockPart) {
+      const clock = this.clockPart.value.bit(ClockLines.CLK);
+      if (clock !== this.lastClock) {
+        this.lastClock = clock;
+        this.fsm = this.fsm.shiftLeft(24);
+        if (this.fsm.bit(15) && this.abort.bit(AbortLines.AT14)) {
+          this.fsm = this.fsm.flipBit(15);
+          this.fsm = this.fsm.flipBit(0);
+        }
+        if (this.fsm.bit(13) && this.abort.bit(AbortLines.AT12)) {
+          this.fsm = this.fsm.flipBit(13);
+          this.fsm = this.fsm.flipBit(0);
+        }
+        if (this.fsm.bit(11) && this.abort.bit(AbortLines.AT10)) {
+          this.fsm = this.fsm.flipBit(11);
+          this.fsm = this.fsm.flipBit(0);
+        }
+        else if (this.fsm.bit(9) && this.abort.bit(AbortLines.AT08)) {
+          this.fsm = this.fsm.flipBit(9);
+          this.fsm = this.fsm.flipBit(0);
+        }
+        if (this.fsm.bit(0)) {
+          this.abort = BitValue.Zero;
+        }
+        this.derrivePulses();
       }
-      if (this.fsm.bit(13) && this.abort.bit(AbortLines.AT12)) {
-        this.fsm = this.fsm.flipBit(13);
-        this.fsm = this.fsm.flipBit(0);
-      }
-      if (this.fsm.bit(11) && this.abort.bit(AbortLines.AT10)) {
-        this.fsm = this.fsm.flipBit(11);
-        this.fsm = this.fsm.flipBit(0);
-      }
-      else if (this.fsm.bit(9) && this.abort.bit(AbortLines.AT08)) {
-        this.fsm = this.fsm.flipBit(9);
-        this.fsm = this.fsm.flipBit(0);
-      }
-      if (this.fsm.bit(0)) {
-        this.abort = BitValue.Zero;
-      }
-      this.derrivePulses();
     }
   };
 

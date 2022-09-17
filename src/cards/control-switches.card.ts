@@ -33,10 +33,10 @@ enum AuxInstruction {
 
 export class ControlSwitchesCard implements IControlSwitchesCard {
 
-  clock: boolean = false;
+  clock = false;
   clockSpeed: number;
-  reset: boolean = false;
-  run: boolean = false;
+  reset = false;
+  run = false;
 
   private auxInstr: AuxInstruction | undefined;
   private auxRegOut: CardPart;

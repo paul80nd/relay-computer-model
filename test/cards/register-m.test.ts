@@ -1,90 +1,70 @@
-'use strict';
-
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegJMXYLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const addr = new ValuePart;
+const data = new ValuePart;
+const ctrl = new LinesPart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createRegisterM();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.y);
-
-const addrIn = new CardPart();
-const dataIn = new CardPart();
-const ctrlIn = new CardPart();
-bgs.y.addressBus.addressPart.connect(addrIn);
-bgs.y.dataControlBus.dataPart.connect(dataIn);
-bgs.y.controlYBus.regJMXYPart.connect(ctrlIn);
-
-const addrOut = bgs.y.addressBus.addressPart;
-const dataOut = bgs.y.dataControlBus.dataPart;
+addr.connectOn(bgs.y.addressBus.addressPart);
+data.connectOn(bgs.y.dataControlBus.dataPart)
+ctrl.connectOn(bgs.y.controlYBus.regJMXYPart);
 
 test('ld sel M1', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xdc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM1);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
-  ctrlIn.value = BitValue.Zero;
+  data.set(0xdc);
+  ctrl.flick(RegJMXYLines.LM1);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegJMXYLines.SM1);
+  data.expect().toBe(0xdc);
+  ctrl.clear();
 });
 
 test('ld sel M2', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xbc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM2);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
-  ctrlIn.value = BitValue.Zero;
+  data.set(0xbc);
+  ctrl.flick(RegJMXYLines.LM2);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegJMXYLines.SM2);
+  data.expect().toBe(0xbc);
+  ctrl.clear();
 });
 
 test('ld clr M1', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM1);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
-  expect(dataOut.value.isZero);
+  data.set(0xba);
+  ctrl.flick(RegJMXYLines.LM1);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegJMXYLines.SM1);
+  data.expect().toBe(0xba);
+  ctrl.set(RegJMXYLines.LM1);
+  data.expect().toBe(0);
 });
 
 test('ld clr M2', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SM2);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
-  expect(dataOut.value.isZero);
+  data.set(0x98);
+  ctrl.flick(RegJMXYLines.LM2);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegJMXYLines.SM2);
+  data.expect().toBe(0x98);
+  ctrl.set(RegJMXYLines.LM2);
+  data.expect().toBe(0);
 });
 
 test('ld M1 M2 sel M', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xab);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM1);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  data.set(0xab);
+  ctrl.flick(RegJMXYLines.LM1);
+  data.clear();
 
-  dataIn.value = BitValue.fromUnsignedNumber(0xcd);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.LM2);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  data.set(0xcd);
+  ctrl.flick(RegJMXYLines.LM2);
+  data.clear();
 
-  expect(addrOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegJMXYLines.SEM);
-  expect(addrOut.value.toUnsignedNumber()).toBe(0xabcd);
-  ctrlIn.value = BitValue.Zero;
+  addr.expect().toBe(0);
+  ctrl.set(RegJMXYLines.SEM);
+  addr.expect().toBe(0xabcd);
+  ctrl.clear();
 });

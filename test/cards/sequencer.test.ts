@@ -1,33 +1,23 @@
-'use strict';
-
 import * as assert from 'assert';
 import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
-import { AbortLines, ClockLines, OperationLines, PulseLines, ResetLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
+import { AbortLines, ClockLines, PulseLines, ResetLines } from '../../src/bus/bus-part-lines';
+import { LinesPart, TestFactory } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const abort = new LinesPart;
+const clock = new LinesPart;
+const reset = new LinesPart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createSequencer();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.w);
-
-const abrtin = new CardPart();
-const clkin = new CardPart();
-const resin = new CardPart();
-bgs.w.operationBus.abortPart.connect(abrtin);
-bgs.w.controlXBus.clockPart.connect(clkin);
-bgs.w.controlXBus.resetPart.connect(resin);
+abort.connectOn(bgs.w.operationBus.abortPart);
+clock.connectOn(bgs.w.controlXBus.clockPart)
+reset.connectOn(bgs.w.controlXBus.resetPart);
 
 const pulseOut = bgs.w.pulseBus.pulsePart;
 
 function clockTick() {
-  clkin.value = clkin.value.flipBit(ClockLines.CLK);
+  clock.invertLine(ClockLines.CLK);
 }
 function checkPulses(testName: string, ...expects: number[]) {
   const expected = expects.reduce((p, c) => p.flipBit(c), BitValue.Zero);
@@ -35,8 +25,7 @@ function checkPulses(testName: string, ...expects: number[]) {
 }
 
 test('8 cycle', function () {
-  resin.value = BitValue.Zero.flipBit(ResetLines.RES);
-  resin.value = BitValue.Zero;
+  reset.flick(ResetLines.RES);
 
   clockTick(); checkPulses("clk 1", PulseLines.A);
   clockTick(); checkPulses("clk 2", PulseLines.A, PulseLines.B);
@@ -44,13 +33,13 @@ test('8 cycle', function () {
   clockTick(); checkPulses("clk 4", PulseLines.E);
   clockTick(); checkPulses("clk 5", PulseLines.C, PulseLines.D, PulseLines.E);
 
-  abrtin.value = BitValue.Zero.flipBit(AbortLines.AT08);
+  abort.set(AbortLines.AT08);
 
   clockTick(); checkPulses("clk 6", PulseLines.C, PulseLines.E);
   clockTick(); checkPulses("clk 7");
   clockTick(); checkPulses("clk 8", PulseLines.F, PulseLines.G, PulseLines.J);
 
-  abrtin.value = BitValue.Zero;
+  abort.clear();
 
   clockTick(); checkPulses("clk 9");
 });
@@ -63,7 +52,7 @@ test('10 cycle', function () {
   clockTick(); checkPulses("clk 4", PulseLines.E);
   clockTick(); checkPulses("clk 5", PulseLines.C, PulseLines.D, PulseLines.E);
 
-  abrtin.value = BitValue.Zero.flipBit(AbortLines.AT10);
+  abort.set(AbortLines.AT10);
 
   clockTick(); checkPulses("clk 6", PulseLines.C, PulseLines.E);
   clockTick(); checkPulses("clk 7");
@@ -71,7 +60,7 @@ test('10 cycle', function () {
   clockTick(); checkPulses("clk 9", PulseLines.F, PulseLines.J, PulseLines.K);
   clockTick(); checkPulses("clk 10", PulseLines.J);
 
-  abrtin.value = BitValue.Zero;
+  abort.clear();
 
   clockTick(); checkPulses("clk 11");
 });
@@ -84,7 +73,7 @@ test('12 cycle', function () {
   clockTick(); checkPulses("clk 4", PulseLines.E);
   clockTick(); checkPulses("clk 5", PulseLines.C, PulseLines.D, PulseLines.E);
 
-  abrtin.value = BitValue.Zero.flipBit(AbortLines.AT12);
+  abort.set(AbortLines.AT12);
 
   clockTick(); checkPulses("clk 6", PulseLines.C, PulseLines.E);
   clockTick(); checkPulses("clk 7");
@@ -94,7 +83,7 @@ test('12 cycle', function () {
   clockTick(); checkPulses("clk 11", PulseLines.H, PulseLines.I);
   clockTick(); checkPulses("clk 12", PulseLines.H, PulseLines.L, PulseLines.M);
 
-  abrtin.value = BitValue.Zero;
+  abort.clear();
 
   clockTick(); checkPulses("clk 13");
 });
@@ -107,7 +96,7 @@ test('14 cycle', function () {
   clockTick(); checkPulses("clk 4", PulseLines.E);
   clockTick(); checkPulses("clk 5", PulseLines.C, PulseLines.D, PulseLines.E);
 
-  abrtin.value = BitValue.Zero.flipBit(AbortLines.AT14);
+  abort.set(AbortLines.AT14);
 
   clockTick(); checkPulses("clk 6", PulseLines.C, PulseLines.E);
   clockTick(); checkPulses("clk 7");
@@ -118,7 +107,7 @@ test('14 cycle', function () {
   clockTick(); checkPulses("clk 12", PulseLines.H, PulseLines.L, PulseLines.M);
   clockTick(); checkPulses("clk 13", PulseLines.L);
 
-  abrtin.value = BitValue.Zero;
+  abort.clear();
 
   clockTick(); checkPulses("clk 14");
   clockTick(); checkPulses("clk 15");
@@ -150,5 +139,5 @@ test('24 cycle', function () {
   clockTick(); checkPulses("clk 22", PulseLines.S, PulseLines.T);
   clockTick(); checkPulses("clk 23", PulseLines.S);
 
-  clkin.value = BitValue.Zero;
+  clock.clear();
 });

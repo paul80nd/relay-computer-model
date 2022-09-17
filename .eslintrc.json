@@ -1,30 +1,17 @@
 {
-  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
+    "ecmaVersion": 2020,
+    "sourceType": "module"
   },
   "plugins": [
-      "@typescript-eslint"
+    "@typescript-eslint"
   ],
   "rules": {
-      "@typescript-eslint/naming-convention": [
-          "warn",
-          {
-              "selector": "typeLike",
-              "format": [
-                  "PascalCase"
-              ]
-          }
-      ],
-      "@typescript-eslint/semi": "warn",
-      "curly": "warn",
-      "eqeqeq": "warn",
-      "no-throw-literal": "warn",
-      "semi": "off",
-      "no-unused-expressions": "warn",
-      "no-duplicate-imports": "warn",
-      "new-parens": "warn"
+    "@typescript-eslint/no-empty-interface": "off"
   }
 }

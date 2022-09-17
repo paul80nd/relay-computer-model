@@ -5,27 +5,29 @@ const addr = new ValuePart;
 const ctrl = new LinesPart;
 
 const { cf, bgs } = TestFactory.Deps;
-const card = cf.createRegisterPC();
+const card = cf.createIncrementer();
 card.connect(bgs.x);
 addr.connectOn(bgs.x.addressBus.addressPart);
 ctrl.connectOn(bgs.x.controlXBus.auxRegisterPart);
 
-test('ld sel', function () {
-  addr.set(0xdcba);
-  ctrl.flick(RegAuxLines.LPC);
+test('inc ld sel', function () {
+  addr.set(0xabcd);
+  ctrl.flick(RegAuxLines.LIC);
   addr.clear();
   addr.expect().toBe(0);
-  ctrl.set(RegAuxLines.SPC);
-  addr.expect().toBe(0xdcba);
+
+  ctrl.set(RegAuxLines.SIC);
+  addr.expect().toBe(0xabce); // one higher
+  ctrl.clear();
 });
 
-test('ld clr', function () {
-  addr.set(0xabcd);
-  ctrl.flick(RegAuxLines.LPC);
+test('inc overflow ld sel', function () {
+  addr.set(0xffff);
+  ctrl.flick(RegAuxLines.LIC);
   addr.clear();
   addr.expect().toBe(0);
-  ctrl.set(RegAuxLines.SPC);
-  addr.expect().toBe(0xabcd);
-  ctrl.set(RegAuxLines.LPC);
-  addr.expect().toBe(0);
+
+  ctrl.set(RegAuxLines.SIC);
+  addr.expect().toBe(0); // overflowed
+  ctrl.clear();
 });

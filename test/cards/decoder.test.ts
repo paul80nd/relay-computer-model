@@ -1,52 +1,39 @@
-'use strict';
-
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { OperationLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
+import { expectPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const inst = new ValuePart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createDecoder();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.w);
-
-const cpip = new CardPart();
-bgs.w.controlInstructionBus.instructionPart.connect(cpip);
+inst.connectOn(bgs.w.controlInstructionBus.instructionPart);
 
 const cpop = bgs.w.operationBus.operationPart;
 
 test('goto', function () {
-  cpip.value = BitValue.fromUnsignedNumber(0b11000000);
-  expect(cpop.value.bit(OperationLines.IGTO));
+  inst.set(0b11000000);
+  expectPart(cpop).hasLinesSet(OperationLines.IGTO);
 });
 
 test('alu', function () {
-  cpip.value = BitValue.fromUnsignedNumber(0b10000000);
-  expect(cpop.value.bit(OperationLines.IALU));
+  inst.set(0b10000000);
+  expectPart(cpop).hasLinesSet(OperationLines.IALU);
 });
 
 test('alu', function () {
-  cpip.value = BitValue.fromUnsignedNumber(0b01000000);
-  expect(cpop.value.bit(OperationLines.ISET));
+  inst.set(0b01000000);
+  expectPart(cpop).hasLinesSet(OperationLines.ISET);
 });
 
 test('mov8', function () {
-  cpip.value = BitValue.fromUnsignedNumber(0b00000000);
-  expect(cpop.value.bit(OperationLines.IMV8));
+  inst.set(0b00000000);
+  expectPart(cpop).hasLinesSet(OperationLines.IMV8);
 });
 
 test('sequence', function () {
-  cpip.value = BitValue.fromUnsignedNumber(0b01000000);
-  cpip.value = BitValue.fromUnsignedNumber(0b00000000);
-  cpip.value = BitValue.fromUnsignedNumber(0b10000000);
-  expect(!cpop.value.bit(OperationLines.ISET));
-  expect(!cpop.value.bit(OperationLines.IMV8));
-  expect(cpop.value.bit(OperationLines.IALU));
+  inst.set(0b01000000);
+  inst.set(0b00000000);
+  inst.set(0b10000000);
+  expectPart(cpop).hasLinesSet(OperationLines.IALU);
 });
 

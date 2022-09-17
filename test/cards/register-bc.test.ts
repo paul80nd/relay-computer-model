@@ -1,114 +1,94 @@
-'use strict';
-
-import { BitValue } from '../../src/bit-value';
-import { BusFactory } from '../../src/bus/bus';
-import { BusGroupFactory } from '../../src/bus/bus-groups';
-import { BusPartFactory } from '../../src/bus/bus-parts';
 import { RegABCDLines } from '../../src/bus/bus-part-lines';
-import { CardFactory } from '../../src/card-factory';
-import { CardPart } from '../../src/cards/card-part';
+import { LinesPart, TestFactory, ValuePart } from './helpers';
 
-const bf = new BusFactory(new BusPartFactory());
-const bgf = new BusGroupFactory(bf);
-const cf = new CardFactory();
+const ctrl = new LinesPart;
+const data = new ValuePart;
 
+const { cf, bgs } = TestFactory.Deps;
 const card = cf.createRegisterBC();
-const bgs = bgf.createBusGroups();
 card.connect(bgs.z);
+ctrl.connectOn(bgs.z.controlZBus.regABCDPart);
+data.connectOn(bgs.z.dataControlBus.dataPart);
 
-const dataIn = new CardPart();
-const ctrlIn = new CardPart();
-bgs.z.dataControlBus.dataPart.connect(dataIn);
-bgs.z.controlZBus.regABCDPart.connect(ctrlIn);
-
-const dataOut = bgs.z.dataControlBus.dataPart;
 const bOut = bgs.z.registerBCBus.registerBPart;
 const cOut = bgs.z.registerBCBus.registerCPart;
 
 test('ld sel B', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xdc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xdc);
+  data.set(0xdc);
+  ctrl.flick(RegABCDLines.RLB);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSB);
+  data.expect().toBe(0xdc);
 });
 
 test('ld sel C', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xbc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xbc);
+  data.set(0xbc);
+  ctrl.flick(RegABCDLines.RLC);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSC);
+  data.expect().toBe(0xbc);
 });
 
 test('ld clr B', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  expect(dataOut.value.isZero);
+  data.set(0xba);
+  ctrl.flick(RegABCDLines.RLB);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSB);
+  data.expect().toBe(0xba);
+  ctrl.set(RegABCDLines.RLB);
+  data.expect().toBe(0);
 });
 
 test('ld clr C', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
-  expect(dataOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
-  expect(dataOut.value.toUnsignedNumber()).toBe(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  expect(dataOut.value.isZero);
+  data.set(0x98);
+  ctrl.flick(RegABCDLines.RLC);
+  data.clear();
+  data.expect().toBe(0);
+  ctrl.set(RegABCDLines.RSC);
+  data.expect().toBe(0x98);
+  ctrl.set(RegABCDLines.RLC);
+  data.expect().toBe(0);
 });
 
 test('ld sel B bus', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xdc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  data.set(0xdc);
+  ctrl.flick(RegABCDLines.RLB);
+  data.clear();
   expect(bOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
+  ctrl.set(RegABCDLines.RSB);
   expect(bOut.value.toUnsignedNumber()).toBe(0xdc);
 });
 
 test('ld sel C bus', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xbc);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  data.set(0xbc);
+  ctrl.flick(RegABCDLines.RLC);
+  data.clear();
   expect(cOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
+  ctrl.set(RegABCDLines.RSC);
   expect(cOut.value.toUnsignedNumber()).toBe(0xbc);
 });
 
 test('ld clr B bus', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  data.set(0xba);
+  ctrl.flick(RegABCDLines.RLB);
+  data.clear();
   expect(bOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSB);
+  ctrl.set(RegABCDLines.RSB);
   expect(bOut.value.toUnsignedNumber()).toBe(0xba);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLB);
+  ctrl.set(RegABCDLines.RLB);
   expect(bOut.value.isZero);
 });
 
 test('ld clr C bus', function () {
-  dataIn.value = BitValue.fromUnsignedNumber(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
-  ctrlIn.value = BitValue.Zero;
-  dataIn.value = BitValue.Zero;
+  data.set(0x98);
+  ctrl.flick(RegABCDLines.RLC);
+  data.clear();
   expect(cOut.value.isZero);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RSC);
+  ctrl.set(RegABCDLines.RSC);
   expect(cOut.value.toUnsignedNumber()).toBe(0x98);
-  ctrlIn.value = BitValue.Zero.flipBit(RegABCDLines.RLC);
+  ctrl.set(RegABCDLines.RLC);
   expect(cOut.value.isZero);
 });
