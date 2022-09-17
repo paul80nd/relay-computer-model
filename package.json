@@ -20,8 +20,8 @@
     "prepublishOnly": "npm run clean && npm run compile && npm run test",
     "compile": "tsc -p . && npm run lint",
     "clean": "rimraf lib",
-    "test": "npm run compile && jest",
-    "testcov": "npm run compile && jest --coverage",
+    "test": "npm run compile && jest lib/test/**/*.js",
+    "testcov": "npm run compile && jest lib/test/**/*.js --coverage",
     "lint": "eslint src/**/*.ts & eslint test/**/*.ts",
     "watch": "tsc --watch -p ."
   },

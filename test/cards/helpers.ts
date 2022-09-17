@@ -52,13 +52,13 @@ expect.extend({
     if (pass) {
       return {
         message: () =>
-          `expected ${expected} not to be ${actual}`,
+          `expected ${actual} not to be ${expected}`,
         pass: true,
       };
     } else {
       return {
         message: () =>
-          `expected ${expected} to be ${actual}`,
+          `expected ${actual} to be ${expected}`,
         pass: false,
       };
     }
