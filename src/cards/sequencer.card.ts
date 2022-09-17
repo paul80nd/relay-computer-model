@@ -19,7 +19,7 @@ export class SequencerCard implements ISequencerCard {
   fsm: BitValue;
   pulse: BitValue;
 
-  private lastClock: boolean = false;
+  private lastClock = false;
 
   private pulseOut: CardPart;
 
@@ -47,7 +47,7 @@ export class SequencerCard implements ISequencerCard {
   }
 
   private reset = () => {
-    const reset = this.resetPart!.value.bit(ResetLines.RES);
+    const reset = this.resetPart?.value.bit(ResetLines.RES) ?? false;
     if (reset) {
       if (!this.fsm.bit(0) && !this.fsm.bit(1) && !this.fsm.bit(2)) {
         this.fsm = this.fsm.flipBit(0);
@@ -65,8 +65,8 @@ export class SequencerCard implements ISequencerCard {
   };
 
   private clock = () => {
-    const clock = this.clockPart!.value.bit(ClockLines.CLK);
-    if (clock !== this.lastClock) {
+    const clock = this.clockPart?.value.bit(ClockLines.CLK);
+    if (clock && clock !== this.lastClock) {
       this.lastClock = clock;
       this.fsm = this.fsm.shiftLeft(24);
       if (this.fsm.bit(15) && this.abort.bit(AbortLines.AT14)) {

@@ -24,7 +24,6 @@ bgs.y.dataControlBus.dataPart.connect(dataIn);
 bgs.y.controlYBus.regJMXYPart.connect(ctrlIn);
 
 const addrOut = bgs.y.addressBus.addressPart;
-const dataOut = bgs.y.dataControlBus.dataPart;
 
 test('ld J1 J1 sel J', function () {
   dataIn.value = BitValue.fromUnsignedNumber(0xab);

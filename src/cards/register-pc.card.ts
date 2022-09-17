@@ -13,7 +13,7 @@ export interface IRegisterPCCard {
 export class RegisterPCCard implements IRegisterPCCard {
 
   register: IRegisterCardPart;
-  pcAddress: number = 0;
+  pcAddress = 0;
 
   constructor() {
     this.register = new RegisterCardPart(RegAuxLines.LPC, RegAuxLines.SPC);

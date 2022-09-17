@@ -16,7 +16,7 @@ export class RegisterICard implements IRegisterICard {
 
   register: IRegisterCardPart;
 
-  private i2b: boolean = false;
+  private i2b = false;
   private dataOut: CardPart;
 
   private i2bPart: II2BBusPart | undefined;

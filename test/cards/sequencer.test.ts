@@ -5,7 +5,7 @@ import { BitValue } from '../../src/bit-value';
 import { BusFactory } from '../../src/bus/bus';
 import { BusGroupFactory } from '../../src/bus/bus-groups';
 import { BusPartFactory } from '../../src/bus/bus-parts';
-import { AbortLines, ClockLines, OperationLines, PulseLines, ResetLines } from '../../src/bus/bus-part-lines';
+import { AbortLines, ClockLines, PulseLines, ResetLines } from '../../src/bus/bus-part-lines';
 import { CardFactory } from '../../src/card-factory';
 import { CardPart } from '../../src/cards/card-part';
 
