@@ -8,6 +8,7 @@ export interface IControlSwitchesCard {
   clock: boolean;
   clockSpeed: number;
   reset: boolean;
+  restart: boolean;
   run: boolean;
 
   data: CardPart;
@@ -20,6 +21,7 @@ export interface IControlSwitchesCard {
   loadAddr(): void;
   toggleClock(): void;
   toggleReset(): void;
+  toggleRestart(): void;
   toggleRunStop(): void;
 }
 
@@ -36,6 +38,7 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
   clock = false;
   clockSpeed: number;
   reset = false;
+  restart = false;
   run = false;
 
   private auxInstr: AuxInstruction | undefined;
@@ -230,7 +233,19 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
         }
       }, 500);
     }
+  }
 
+  toggleRestart(): void {
+    if (!this.restart) {
+      this.restart = true;
+      this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
+      setTimeout(() => {
+        this.restart = false;
+        if (this.clockCtrlOut.value.bit(ClockCtrlLines.RST)) {
+          this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
+        }
+      }, 500);
+    }
   }
 
 }
