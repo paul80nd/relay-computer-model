@@ -1,7 +1,7 @@
 import { ICardWBusGroup, ICardXBusGroup, ICardYBusGroup, ICardZBusGroup } from './bus/bus-groups';
 import { ICardFactory } from './card-factory';
 import {
-  IAluArithmeticCard, IAluControlCard, IAluLogicCard, IControlCard,
+  IAluArithmeticCard, IAluControlCard, IAluLogicCard, IClockCard, IControlCard,
   IDecoderCard, IIncrementerCard, IMemoryCard, IRegisterADCard,
   IRegisterBCCard, IRegisterICard, IRegisterJCard, IRegisterMCard,
   IRegisterPCCard, IRegisterXYCard, ISequencerCard
@@ -23,6 +23,7 @@ export interface IWBackplane {
 }
 
 export interface IXBackplane {
+  readonly clock: IClockCard;
   readonly incrementer: IIncrementerCard;
   readonly registerI: IRegisterICard;
   readonly registerPC: IRegisterPCCard;
@@ -63,6 +64,7 @@ export class BackplaneFactory implements IBackplaneFactory {
 
   createXBackplane(): IXBackplane {
     return new XBackplane(
+      this.cardFactory.createClock(),
       this.cardFactory.createIncrementer(),
       this.cardFactory.createRegisterI(),
       this.cardFactory.createRegisterPC()
@@ -107,11 +109,13 @@ class WBackplane implements IWBackplane {
 class XBackplane implements IXBackplane {
 
   constructor(
+    public clock: IClockCard,
     public incrementer: IIncrementerCard,
     public registerI: IRegisterICard,
     public registerPC: IRegisterPCCard) { }
 
   connect(busGroup: ICardXBusGroup) {
+    this.clock.connect(busGroup);
     this.incrementer.connect(busGroup);
     this.registerI.connect(busGroup);
     this.registerPC.connect(busGroup);

@@ -1,8 +1,8 @@
 import {
   AluArithmeticCard, AluControlCard, AluLogicCard, AuxControlCard,
-  ControlCard, ControlSwitchesCard, DecoderCard, DisplayACard,
+  ClockCard, ControlCard, ControlSwitchesCard, DecoderCard, DisplayACard,
   DisplayBCard, IAluArithmeticCard, IAluControlCard, IAluLogicCard,
-  IAuxControlCard, IControlCard, IControlSwitchesCard, IDecoderCard,
+  IAuxControlCard, IClockCard, IControlCard, IControlSwitchesCard, IDecoderCard,
   IDisplayACard, IDisplayBCard, IIncrementerCard, IMemoryCard,
   IncrementerCard, IRegisterADCard, IRegisterBCCard, IRegisterICard,
   IRegisterJCard, IRegisterMCard, IRegisterPCCard, IRegisterXYCard,
@@ -16,6 +16,7 @@ export interface ICardFactory {
   createAluControl(): IAluControlCard;
   createAluLogic(): IAluLogicCard;
   createCards(): ICards;
+  createClock(): IClockCard;
   createControl(): IControlCard;
   createDecoder(): IDecoderCard;
   createIncrementer(): IIncrementerCard;
@@ -65,6 +66,7 @@ export class CardFactory implements ICardFactory {
   createAluArithmetic(): IAluArithmeticCard { return new AluArithmeticCard(); }
   createAluControl(): IAluControlCard { return new AluControlCard(); }
   createAluLogic(): IAluLogicCard { return new AluLogicCard(); }
+  createClock(): IClockCard { return new ClockCard(); }
   createControl(): IControlCard { return new ControlCard(); }
   createDecoder(): IDecoderCard { return new DecoderCard(); }
   createIncrementer(): IIncrementerCard { return new IncrementerCard(); }

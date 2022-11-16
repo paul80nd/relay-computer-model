@@ -3,6 +3,7 @@ import {
   IAluFunctionClBusPart, IAluOperationBusPart, IAuxRegisterBusPart,
   IBusPartFactory,
   IClockBusPart,
+  IClockCtrlBusPart,
   IConditionBusPart, IDataBusPart, IDataSwitchGateBusPart,
   II2BBusPart, IInstructionBusPart,
   IMemoryBusPart,
@@ -29,6 +30,7 @@ export interface IControlInstructionBus extends IBus {
 export interface IControlXBus extends IBus {
   readonly auxRegisterPart: IAuxRegisterBusPart;
   readonly clockPart: IClockBusPart;
+  readonly clockCtrlPart: IClockCtrlBusPart;
   readonly i2bPart: II2BBusPart;
   readonly resetPart: IResetBusPart;
 }
@@ -153,6 +155,7 @@ export class BusFactory implements IBusFactory {
     const aluOperationPart = this.busPartFactory.getForAluOperation();
     const auxRegisterPart = this.busPartFactory.getForAuxRegister();
     const clockPart = this.busPartFactory.getForClock();
+    const clockCtrlPart = this.busPartFactory.getForClockCtrl();
     const conditionPart = this.busPartFactory.getForCondition();
     const dataPart = this.busPartFactory.getForData();
     const i2bPart = this.busPartFactory.getForI2B();
@@ -170,7 +173,7 @@ export class BusFactory implements IBusFactory {
     const controlInstruction = { aluFunctionClPart, conditionPart, instructionPart };
     const dataControl = { aluFunctionClPart, conditionPart, dataPart };
     const dataInstruction = { dataPart, instructionPart };
-    const controlX = { auxRegisterPart, clockPart, i2bPart, resetPart };
+    const controlX = { auxRegisterPart, clockPart, clockCtrlPart, i2bPart, resetPart };
     const controlY = { memoryPart, sdsPart, regJMXYPart };
     const controlZ = { regABCDPart, aluOperationPart };
     const registerBC = {

@@ -46,6 +46,15 @@ export enum ClockLines {
   CLK
 }
 
+export enum ClockCtrlLines {
+  /** Halt */
+  HLT,
+  /** Freeze */
+  FRZ,
+  /** Restart */
+  RST
+}
+
 export enum ConditionLines {
   /** Sign Condition */
   SN,
@@ -86,7 +95,9 @@ export enum OperationLines {
   /** ALU */
   IALU,
   /** GTO */
-  IGTO
+  IGTO,
+  /** MISC */
+  IMSC
 }
 
 export enum PulseLines {

@@ -28,6 +28,8 @@ export interface IAluOperationBusPart extends IBusPart { }
 export interface IAuxRegisterBusPart extends IBusPart { }
 /** Bus part for the 1 line that carries the CLK signal */
 export interface IClockBusPart extends IBusPart { }
+/** Bus part for the 4 lines that carry the clock control */
+export interface IClockCtrlBusPart extends IBusPart { }
 /** Bus part for the 4 lines that carry the condition register outputs */
 export interface IConditionBusPart extends IBusPart { }
 /** Bus part for the 8 lines that carry the data bus value */
@@ -61,6 +63,7 @@ export interface IBusPartFactory {
   getForAluOperation(): IAluOperationBusPart;
   getForAuxRegister(): IAuxRegisterBusPart;
   getForClock(): IClockBusPart;
+  getForClockCtrl(): IClockCtrlBusPart;
   getForCondition(): IConditionBusPart;
   getForData(): IDataBusPart;
   getForDataSwitchGate(): IDataSwitchGateBusPart;
@@ -81,6 +84,7 @@ export class BusPartFactory implements IBusPartFactory {
   getForAluOperation(): IAluOperationBusPart { return new BusPart(); }
   getForAuxRegister(): IAuxRegisterBusPart { return new BusPart(); }
   getForClock(): IClockBusPart { return new BusPart(); }
+  getForClockCtrl(): IClockCtrlBusPart { return new BusPart(); }
   getForCondition(): IConditionBusPart { return new BusPart(); }
   getForData(): IDataBusPart { return new BusPart(); }
   getForDataSwitchGate(): IDataSwitchGateBusPart { return new BusPart(); }
