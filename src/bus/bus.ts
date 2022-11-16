@@ -83,6 +83,7 @@ export interface IDisplayB1Bus extends IBus {
   readonly aluOperationPart: IAluOperationBusPart;
   readonly aluFunctionClPart: IAluFunctionClBusPart;
   readonly clockPart: IClockBusPart;
+  readonly clockCtrlPart: IClockCtrlBusPart;
   readonly conditionPart: IConditionBusPart;
   readonly dataPart: IDataBusPart;
 }
@@ -195,7 +196,7 @@ export class BusFactory implements IBusFactory {
     };
     const displayB1 = {
       aluOperationPart, aluFunctionClPart, clockPart,
-      conditionPart, dataPart
+      clockCtrlPart, conditionPart, dataPart
     };
     const displayB2 = { addressPart, instructionPart };
     const displayB3 = { operationPart };
