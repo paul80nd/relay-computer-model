@@ -97,9 +97,12 @@ export class ClockCard implements IClockCard {
     this.freeze = v.bit(ClockCtrlLines.FRZ);
     // freeze overrides everything
     if (!this.freeze) {
-      if (v.bit(ClockCtrlLines.HLT)) {
-        // half causes freeze
-        this.freeze = true;
+      if (!v.bit(ClockCtrlLines.RST)) {
+        // Restart vetos halt
+        if (v.bit(ClockCtrlLines.HLT)) {
+          // halt causes freeze
+          this.freeze = true;
+        }
       }
     }
 
