@@ -4,6 +4,7 @@ export * from './alu-logic.card';
 export * from './aux-control.card';
 export * from './card-part';
 export * from '../card-factory';
+export * from './clock.card';
 export * from './control.card';
 export * from './control-switches.card';
 export * from './decoder.card';

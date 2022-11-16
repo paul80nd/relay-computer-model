@@ -1,13 +1,14 @@
 import { BitValue } from '../bit-value';
 import { CardPart } from './card-part';
 import { IControlSwitchesBusGroup } from '../bus/bus-groups';
-import { ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus-part-lines';
+import { ClockCtrlLines, ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus-part-lines';
 
 export interface IControlSwitchesCard {
 
   clock: boolean;
   clockSpeed: number;
   reset: boolean;
+  restart: boolean;
   run: boolean;
 
   data: CardPart;
@@ -20,6 +21,7 @@ export interface IControlSwitchesCard {
   loadAddr(): void;
   toggleClock(): void;
   toggleReset(): void;
+  toggleRestart(): void;
   toggleRunStop(): void;
 }
 
@@ -36,12 +38,14 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
   clock = false;
   clockSpeed: number;
   reset = false;
+  restart = false;
   run = false;
 
   private auxInstr: AuxInstruction | undefined;
   private auxRegOut: CardPart;
   private auxState: number;
   private clockOut: CardPart;
+  private clockCtrlOut: CardPart;
   data: CardPart;
   private memoryOut: CardPart;
   private regABCDOut: CardPart;
@@ -53,16 +57,19 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
     this.clockSpeed = 500;
     this.auxRegOut = new CardPart();
     this.clockOut = new CardPart();
+    this.clockCtrlOut = new CardPart();
     this.data = new CardPart();
     this.memoryOut = new CardPart();
     this.regABCDOut = new CardPart();
     this.resetOut = new CardPart();
     this.sdsOut = new CardPart();
+    this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.FRZ);
   }
 
   connect(busGroup: IControlSwitchesBusGroup) {
     // Outputs
     busGroup.controlXBus.clockPart.connect(this.clockOut);
+    busGroup.controlXBus.clockCtrlPart.connect(this.clockCtrlOut);
     busGroup.controlXBus.resetPart.connect(this.resetOut);
     busGroup.controlXBus.auxRegisterPart.connect(this.auxRegOut);
     busGroup.controlYBus.sdsPart.connect(this.sdsOut);
@@ -196,11 +203,9 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
   toggleRunStop(): void {
     this.run = !this.run;
     if (this.run) {
-      setTimeout(this.clockRun, this.clockSpeed);
+      this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.FRZ);
     } else {
-      if (this.clockOut.value.bit(ClockLines.CLK)) {
-        this.clockOut.value = this.clockOut.value.flipBit(ClockLines.CLK);
-      }
+      this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.FRZ);
     }
   }
 
@@ -228,14 +233,19 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
         }
       }, 500);
     }
-
   }
 
-  private clockRun = () => {
-    if (this.run) {
-      this.clockOut.value = this.clockOut.value.flipBit(ClockLines.CLK);
-      setTimeout(this.clockRun, this.clockSpeed);
+  toggleRestart(): void {
+    if (!this.restart) {
+      this.restart = true;
+      this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
+      setTimeout(() => {
+        this.restart = false;
+        if (this.clockCtrlOut.value.bit(ClockCtrlLines.RST)) {
+          this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
+        }
+      }, 500);
     }
-  };
+  }
 
 }

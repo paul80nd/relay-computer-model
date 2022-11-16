@@ -7,6 +7,7 @@ export interface IDisplayBCard {
   alu: BitValue;
   aluFuncCl: BitValue;
   clock: BitValue;
+  clockCtrl: BitValue;
   condition: BitValue;
   data: BitValue;
   instruction: BitValue;
@@ -22,6 +23,7 @@ export class DisplayBCard implements IDisplayBCard {
   alu: BitValue = BitValue.Zero;
   aluFuncCl: BitValue = BitValue.Zero;
   clock: BitValue = BitValue.Zero;
+  clockCtrl: BitValue = BitValue.Zero;
   condition: BitValue = BitValue.Zero;
   data: BitValue = BitValue.Zero;
   instruction: BitValue = BitValue.Zero;
@@ -31,6 +33,7 @@ export class DisplayBCard implements IDisplayBCard {
     busGroup.b1Bus.aluFunctionClPart.subscribe(v => this.aluFuncCl = v);
     busGroup.b1Bus.aluOperationPart.subscribe(v => this.alu = v);
     busGroup.b1Bus.clockPart.subscribe(v => this.clock = v);
+    busGroup.b1Bus.clockCtrlPart.subscribe(v => this.clockCtrl = v);
     busGroup.b1Bus.conditionPart.subscribe(v => this.condition = v);
     busGroup.b1Bus.dataPart.subscribe(v => this.data = v);
     busGroup.b2Bus.addressPart.subscribe(v => this.address = v);

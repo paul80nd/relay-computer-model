@@ -8,7 +8,7 @@ import {
 } from '../bus/bus-parts';
 import {
   AbortLines, AluFunctionClLines, I2BLines, MemoryLines,
-  OperationLines, PulseLines, RegABCDLines, RegAuxLines, RegJMXYLines, ConditionLines
+  OperationLines, PulseLines, RegABCDLines, RegAuxLines, RegJMXYLines, ConditionLines, ClockCtrlLines
 } from '../bus/bus-part-lines';
 
 export interface IControlCard {
@@ -16,6 +16,7 @@ export interface IControlCard {
   abort: BitValue;
   aluFunc: BitValue;
   auxReg: BitValue;
+  clockCtrl: BitValue;
   i2b: BitValue;
   memory: BitValue;
   regABCD: BitValue;
@@ -29,6 +30,7 @@ export class ControlCard implements IControlCard {
   abort: BitValue;
   aluFunc: BitValue;
   auxReg: BitValue;
+  clockCtrl: BitValue;
   i2b: BitValue;
   memory: BitValue;
   regABCD: BitValue;
@@ -37,6 +39,7 @@ export class ControlCard implements IControlCard {
   private abortOut: CardPart;
   private aluFuncOut: CardPart;
   private auxRegOut: CardPart;
+  private clockCtrlOut: CardPart;
   private i2bOut: CardPart;
   private memoryOut: CardPart;
   private regABCDOut: CardPart;
@@ -55,6 +58,8 @@ export class ControlCard implements IControlCard {
     this.aluFuncOut = new CardPart();
     this.auxReg = BitValue.Zero;
     this.auxRegOut = new CardPart();
+    this.clockCtrl = BitValue.Zero;
+    this.clockCtrlOut = new CardPart();
     this.i2b = BitValue.Zero;
     this.i2bOut = new CardPart();
     this.memory = BitValue.Zero;
@@ -81,6 +86,7 @@ export class ControlCard implements IControlCard {
     busGroup.controlInstructionBus.aluFunctionClPart.connect(this.aluFuncOut);
     busGroup.controlXBus.i2bPart.connect(this.i2bOut);
     busGroup.controlXBus.auxRegisterPart.connect(this.auxRegOut);
+    busGroup.controlXBus.clockCtrlPart.connect(this.clockCtrlOut);
     busGroup.controlYBus.memoryPart.connect(this.memoryOut);
     busGroup.controlYBus.regJMXYPart.connect(this.regJMXYOut);
     busGroup.controlZBus.regABCDPart.connect(this.regABCDOut);
@@ -101,6 +107,8 @@ export class ControlCard implements IControlCard {
         this.updateAlu();
       } else if (operation.bit(OperationLines.IGTO)) {
         this.updateGoto();
+      } else if (operation.bit(OperationLines.IMSC)) {
+        this.updateMisc();
       }
     }
   };
@@ -370,4 +378,30 @@ export class ControlCard implements IControlCard {
     }
   }
 
+  private updateMisc() {
+    if (this.pulsePart && this.instructionPart) {
+      const pulse = this.pulsePart.value;
+      const instr = this.instructionPart.value;
+      let clockCtrl = BitValue.Zero;
+      let abort = BitValue.Zero;
+
+      if (pulse.bit(PulseLines.D)) {
+        // ABT-10
+        abort = abort.flipBit(AbortLines.AT10);
+      }
+
+      if (pulse.bit(PulseLines.G)) {
+        if (instr.bit(1)) {
+          // HALT
+          clockCtrl = clockCtrl.flipBit(ClockCtrlLines.HLT);
+        }
+      }
+
+      if (!this.clockCtrl.isEqualTo(clockCtrl)) { this.clockCtrl = clockCtrl; }
+      this.clockCtrlOut.value = clockCtrl;
+
+      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
+      this.abortOut.value = abort;
+    }
+  }
 }
