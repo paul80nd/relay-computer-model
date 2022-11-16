@@ -37,9 +37,8 @@ export class ClockCard implements IClockCard {
   constructor() {
     this.clockOut = new CardPart();
     this.clockEnabled = new CardPart();
-    //    this.clockEnabled.value = this.clockEnabled.value.flipBit(0);
+    this.clockEnabled.value = this.clockEnabled.value.flipBit(0);
     this.clockType = new CardPart();
-    this.clockType.value = this.clockType.value.flipBit(0);
     this.clockSpeed = new CardPart();
     this.clockSpeed.value = BitValue.fromUnsignedNumber(2);
     this.clock = BitValue.Zero;
