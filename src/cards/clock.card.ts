@@ -86,15 +86,23 @@ export class ClockCard implements IClockCard {
     }
   };
 
-  private updateSpeed = (v: BitValue)  => {
-     // Accept frequency change if crystal clock running
-     if (this.runCrystal) {
+  private updateSpeed = (v: BitValue) => {
+    // Accept frequency change if crystal clock running
+    if (this.runCrystal) {
       this.delay = 2000 * Math.pow(2, 0 - v.toUnsignedNumber());
     }
   };
 
   private updateCtrl = (v: BitValue) => {
     this.freeze = v.bit(ClockCtrlLines.FRZ);
+    // freeze overrides everything
+    if (!this.freeze) {
+      if (v.bit(ClockCtrlLines.HLT)) {
+        // half causes freeze
+        this.freeze = true;
+      }
+    }
+
   };
 
   toggleEnabled(): void {
