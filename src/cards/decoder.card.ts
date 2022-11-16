@@ -41,10 +41,17 @@ export class DecoderCard implements IDecoderCard {
         // 11xxxxxx GOTO
         oper = oper.flipBit(OperationLines.IGTO);
       }
-      if (opCode.bit(7) && !opCode.bit(6) && !opCode.bit(5) && !opCode.bit(4)) {
-        // 1000xxxx ALU
-        oper = oper.flipBit(OperationLines.IALU);
-      } else if (!opCode.bit(7)) {
+      else if (opCode.bit(7) && !opCode.bit(6)) {
+        // 10------
+        if (!opCode.bit(5) && !opCode.bit(4)) {
+          // 1000xxxx ALU
+          oper = oper.flipBit(OperationLines.IALU);
+        } else if (opCode.bit(5) && !opCode.bit(4) && opCode.bit(3)) {
+          // 10101xxx MISC
+          oper = oper.flipBit(OperationLines.IMSC);
+        }
+      }
+      else if (!opCode.bit(7)) {
         if (opCode.bit(6)) {
           // 01xxxxxx SET-AB
           oper = oper.flipBit(OperationLines.ISET);
