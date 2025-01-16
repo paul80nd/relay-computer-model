@@ -1,8 +1,8 @@
-#  Relay Computer Model
+# Relay Computer Model
 
-Typescript based simulation of my Relay Computer 
+Typescript based simulation of my Relay Computer
 
-# Developing
+## Developing
 
 - Restore packages with `npm install`
 - Perform full build with `npm run prepublishOnly`
