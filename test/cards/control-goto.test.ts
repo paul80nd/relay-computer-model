@@ -163,3 +163,17 @@ test('goto LD-PC', function () {
   expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.LPC);
   alucnd.clear()
 });
+
+test('goto call', function () {
+  inst.set(0b11100111);
+
+  alucnd.set(ConditionLines.NZ);
+  pulse.set(PulseLines.T);
+  expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.LPC);
+  alucnd.clear()
+
+  alucnd.set(ConditionLines.EZ);
+  pulse.set(PulseLines.T);
+  expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.LPC);
+  alucnd.clear()
+});

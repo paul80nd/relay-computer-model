@@ -50,6 +50,11 @@ export class AluControlCard implements IAluControlCard {
     // Outputs
     busGroup.dataControlBus.conditionPart.connect(this.conditionOut);
     busGroup.controlZBus.aluOperationPart.connect(this.operationOut);
+    // Initial State (NZ)
+    let state = BitValue.Zero;
+    state = state.flipBit(ConditionLines.NZ);
+    this.condition.value = state;
+    this.conditionOut.value = state;
   }
 
   private update = () => {
