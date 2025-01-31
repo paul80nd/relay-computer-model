@@ -1,4 +1,4 @@
-import { RegJMXYLines } from '../../src/bus/bus-part-lines';
+import { RegJMXYLines } from '../../../src/bus/bus-part-lines';
 import { LinesPart, TestFactory, ValuePart } from './helpers';
 
 const addr = new ValuePart;

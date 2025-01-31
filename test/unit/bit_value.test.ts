@@ -1,6 +1,6 @@
 'use strict';
 
-import * as sut from '../src/bit-value';
+import * as sut from '../../src/bit-value';
 
 test('zero instance', function () {
   const test = sut.BitValue.Zero;

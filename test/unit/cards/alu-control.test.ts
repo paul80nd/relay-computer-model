@@ -1,4 +1,4 @@
-import { AluFunctionClLines, ConditionLines } from '../../src/bus/bus-part-lines';
+import { AluFunctionClLines, ConditionLines } from '../../../src/bus/bus-part-lines';
 import { expectPart, LinesPart, TestFactory, ValuePart } from './helpers';
 
 const clPart = new LinesPart;

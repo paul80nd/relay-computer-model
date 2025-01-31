@@ -17,12 +17,14 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "prepublishOnly": "npm run clean && npm run compile && npm run test",
-    "compile": "tsc -p . && npm run lint",
+    "prepublishOnly": "npm run clean && npm run compile && npm run lint && npm run test",
+    "compile": "tsc -p .",
     "clean": "rimraf lib",
-    "test": "npm run compile && jest lib/test/**/*.js",
-    "testx": "tsc -p . && jest lib/test/**/*.js --detectOpenHandles",
-    "testcov": "npm run compile && jest lib/test/**/*.js --coverage",
+    "test": "npm run test-unit && npm run test-acpt",
+    "test-unit": "npm run compile && jest lib/test/unit",
+    "test-unit-cov": "npm run compile && jest lib/test/unit --coverage",
+    "test-acpt": "npm run compile && jest lib/test/acpt",
+    "test-acpt-cov": "npm run compile && jest lib/test/acpt --coverage",
     "lint": "eslint src/**/*.ts & eslint test/**/*.ts",
     "watch": "tsc --watch -p ."
   },

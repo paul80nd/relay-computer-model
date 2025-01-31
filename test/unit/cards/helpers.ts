@@ -1,8 +1,8 @@
-import { BitValue, CardOutput } from "../../src";
-import { BusFactory } from "../../src/bus/bus";
-import { BusGroupFactory } from "../../src/bus/bus-groups";
-import { BusPartFactory, IBusPart } from "../../src/bus/bus-parts";
-import { CardFactory } from "../../src/cards";
+import { BitValue, CardOutput } from "../../../src";
+import { BusFactory } from "../../../src/bus/bus";
+import { BusGroupFactory } from "../../../src/bus/bus-groups";
+import { BusPartFactory, IBusPart } from "../../../src/bus/bus-parts";
+import { CardFactory } from "../../../src/cards";
 
 export class TestFactory {
   static get Deps() {

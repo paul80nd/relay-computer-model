@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { BitValue } from '../../src/bit-value';
-import { AbortLines, ClockLines, PulseLines, ResetLines } from '../../src/bus/bus-part-lines';
+import { BitValue } from '../../../src/bit-value';
+import { AbortLines, ClockLines, PulseLines, ResetLines } from '../../../src/bus/bus-part-lines';
 import { LinesPart, TestFactory } from './helpers';
 
 const abort = new LinesPart;

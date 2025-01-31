@@ -1,4 +1,4 @@
-import { RegABCDLines } from '../../src/bus/bus-part-lines';
+import { RegABCDLines } from '../../../src/bus/bus-part-lines';
 import { LinesPart, TestFactory, ValuePart } from './helpers';
 
 const ctrl = new LinesPart;

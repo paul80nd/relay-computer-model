@@ -1,4 +1,4 @@
-import { ConditionLines, MemoryLines, OperationLines, PulseLines, RegAuxLines, RegJMXYLines } from '../../src/bus/bus-part-lines';
+import { ConditionLines, MemoryLines, OperationLines, PulseLines, RegAuxLines, RegJMXYLines } from '../../../src/bus/bus-part-lines';
 import { expectPart, LinesPart, TestFactory, ValuePart } from './helpers';
 
 const op = new LinesPart;

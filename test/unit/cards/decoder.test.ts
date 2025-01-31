@@ -1,4 +1,4 @@
-import { OperationLines } from '../../src/bus/bus-part-lines';
+import { OperationLines } from '../../../src/bus/bus-part-lines';
 import { expectPart, TestFactory, ValuePart } from './helpers';
 
 const inst = new ValuePart;
