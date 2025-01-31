@@ -2,7 +2,7 @@ export * from './alu-arithmetic.card';
 export * from './alu-control.card';
 export * from './alu-logic.card';
 export * from './aux-control.card';
-export * from './card-part';
+export * from './card-output';
 export * from '../card-factory';
 export * from './clock.card';
 export * from './control.card';

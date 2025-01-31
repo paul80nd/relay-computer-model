@@ -14,7 +14,6 @@ export interface IDisplayBCard {
   operation: BitValue;
 
   connect(dataBus: IDisplayBBusGroup): void;
-
 }
 
 export class DisplayBCard implements IDisplayBCard {

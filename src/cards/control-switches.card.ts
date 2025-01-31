@@ -1,5 +1,5 @@
 import { BitValue } from '../bit-value';
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { IControlSwitchesBusGroup } from '../bus/bus-groups';
 import { ClockCtrlLines, ClockLines, DataSwitchGateLines, MemoryLines, RegABCDLines, RegAuxLines, ResetLines } from '../bus/bus-part-lines';
 
@@ -11,7 +11,7 @@ export interface IControlSwitchesCard {
   restart: boolean;
   run: boolean;
 
-  data: CardPart;
+  data: CardOutput;
 
   connect(busGroup: IControlSwitchesBusGroup): void;
   deposit(): void;
@@ -42,27 +42,27 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
   run = false;
 
   private auxInstr: AuxInstruction | undefined;
-  private auxRegOut: CardPart;
+  private auxRegOut: CardOutput;
   private auxState: number;
-  private clockOut: CardPart;
-  private clockCtrlOut: CardPart;
-  data: CardPart;
-  private memoryOut: CardPart;
-  private regABCDOut: CardPart;
-  private resetOut: CardPart;
-  private sdsOut: CardPart;
+  private clockOut: CardOutput;
+  private clockCtrlOut: CardOutput;
+  data: CardOutput;
+  private memoryOut: CardOutput;
+  private regABCDOut: CardOutput;
+  private resetOut: CardOutput;
+  private sdsOut: CardOutput;
 
   constructor() {
     this.auxState = 0;
     this.clockSpeed = 500;
-    this.auxRegOut = new CardPart();
-    this.clockOut = new CardPart();
-    this.clockCtrlOut = new CardPart();
-    this.data = new CardPart();
-    this.memoryOut = new CardPart();
-    this.regABCDOut = new CardPart();
-    this.resetOut = new CardPart();
-    this.sdsOut = new CardPart();
+    this.auxRegOut = new CardOutput();
+    this.clockOut = new CardOutput();
+    this.clockCtrlOut = new CardOutput();
+    this.data = new CardOutput();
+    this.memoryOut = new CardOutput();
+    this.regABCDOut = new CardOutput();
+    this.resetOut = new CardOutput();
+    this.sdsOut = new CardOutput();
     this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.FRZ);
   }
 

@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { BitValue } from '../bit-value';
 import { ICardWBusGroup } from '../bus/bus-groups';
 import {
@@ -37,15 +37,15 @@ export class ControlCard implements IControlCard {
   regJMXY: BitValue;
   sds: BitValue;
 
-  private abortOut: CardPart;
-  private aluFuncOut: CardPart;
-  private auxRegOut: CardPart;
-  private clockCtrlOut: CardPart;
-  private i2bOut: CardPart;
-  private memoryOut: CardPart;
-  private regABCDOut: CardPart;
-  private regJMXYOut: CardPart;
-  private sdsOut: CardPart;
+  private abortOut: CardOutput;
+  private aluFuncOut: CardOutput;
+  private auxRegOut: CardOutput;
+  private clockCtrlOut: CardOutput;
+  private i2bOut: CardOutput;
+  private memoryOut: CardOutput;
+  private regABCDOut: CardOutput;
+  private regJMXYOut: CardOutput;
+  private sdsOut: CardOutput;
 
   private aluFuncClPart: IAluFunctionClBusPart | undefined;
   private aluConditionPart: IConditionBusPart | undefined;
@@ -55,23 +55,23 @@ export class ControlCard implements IControlCard {
 
   constructor() {
     this.abort = BitValue.Zero;
-    this.abortOut = new CardPart();
+    this.abortOut = new CardOutput();
     this.aluFunc = BitValue.Zero;
-    this.aluFuncOut = new CardPart();
+    this.aluFuncOut = new CardOutput();
     this.auxReg = BitValue.Zero;
-    this.auxRegOut = new CardPart();
+    this.auxRegOut = new CardOutput();
     this.clockCtrl = BitValue.Zero;
-    this.clockCtrlOut = new CardPart();
+    this.clockCtrlOut = new CardOutput();
     this.i2b = BitValue.Zero;
-    this.i2bOut = new CardPart();
+    this.i2bOut = new CardOutput();
     this.memory = BitValue.Zero;
-    this.memoryOut = new CardPart();
+    this.memoryOut = new CardOutput();
     this.regABCD = BitValue.Zero;
-    this.regABCDOut = new CardPart();
+    this.regABCDOut = new CardOutput();
     this.regJMXY = BitValue.Zero;
-    this.regJMXYOut = new CardPart();
+    this.regJMXYOut = new CardOutput();
     this.sds = BitValue.Zero;
-    this.sdsOut = new CardPart();
+    this.sdsOut = new CardOutput();
   }
 
   connect(busGroup: ICardWBusGroup) {

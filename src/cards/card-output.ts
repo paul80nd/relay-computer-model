@@ -1,12 +1,21 @@
 import { BitValue } from '../bit-value';
-import { Observable } from '../observable';
+import { Observable, IObservable } from '../observable';
 
 /**
- * A card part represents a number of related lines/wires which generate
+ * A card output represents a number of related lines/wires which generate
  * related signals or form a multi-bit value. Events are raised for
- * the card part as a whole when any individial line changes.
+ * the card output as a whole when any individial line changes.
  */
-export class CardPart extends Observable<BitValue> {
+export interface ICardOutput extends IObservable<BitValue> {
+  get value(): BitValue;
+}
+
+/**
+ * A card output represents a number of related lines/wires which generate
+ * related signals or form a multi-bit value. Events are raised for
+ * the card output as a whole when any individial line changes.
+ */
+export class CardOutput extends Observable<BitValue> implements ICardOutput {
 
   private _value: BitValue;
 

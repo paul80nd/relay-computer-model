@@ -1,12 +1,12 @@
 import { BitValue } from '../../bit-value';
-import { CardPart } from '../card-part';
+import { CardOutput, ICardOutput } from '../card-output';
 import { IBusPart, IDataBusPart, IRegisterABCDBusPart, IAddressBusPart } from '../../bus/bus-parts';
 
 export interface IRegisterYCardPart {
 
-  valueLo: CardPart;
-  valueHi: CardPart;
-  valueHiLo: CardPart;
+  valueLo: ICardOutput;
+  valueHi: ICardOutput;
+  valueHiLo: ICardOutput;
   loadLo: boolean;
   loadHi: boolean;
   loadHiLo: boolean;
@@ -23,9 +23,9 @@ export interface IRegisterYCardPart {
 
 export class RegisterYCardPart implements IRegisterYCardPart {
 
-  valueLo: CardPart;
-  valueHi: CardPart;
-  valueHiLo: CardPart;
+  valueLo: CardOutput;
+  valueHi: CardOutput;
+  valueHiLo: CardOutput;
   loadLo: boolean = false;
   loadHi: boolean = false;
   loadHiLo: boolean = false;
@@ -41,9 +41,9 @@ export class RegisterYCardPart implements IRegisterYCardPart {
   private dataPart: IDataBusPart | undefined;
   private ctrlPart: IRegisterABCDBusPart | undefined;
 
-  private valueOutHi: CardPart;
-  private valueOutLo: CardPart;
-  private valueOutHiLo: CardPart;
+  private valueOutHi: CardOutput;
+  private valueOutLo: CardOutput;
+  private valueOutHiLo: CardOutput;
 
   constructor(
     private loadLineHi: number, private selectLineHi: number | undefined,
@@ -54,12 +54,12 @@ export class RegisterYCardPart implements IRegisterYCardPart {
     this.isSelectableLo = (selectLineLo !== undefined);
     this.isLoadableHiLo = (loadLineHiLo !== undefined);
 
-    this.valueHi = new CardPart();
-    this.valueLo = new CardPart();
-    this.valueHiLo = new CardPart();
-    this.valueOutHi = new CardPart();
-    this.valueOutLo = new CardPart();
-    this.valueOutHiLo = new CardPart();
+    this.valueHi = new CardOutput();
+    this.valueLo = new CardOutput();
+    this.valueHiLo = new CardOutput();
+    this.valueOutHi = new CardOutput();
+    this.valueOutLo = new CardOutput();
+    this.valueOutHiLo = new CardOutput();
   }
 
   connect(dataPartIn: IDataBusPart, addressPart: IAddressBusPart, ctrlPart: IBusPart, dataPartOut: IDataBusPart) {

@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { BitValue } from '../bit-value';
 import { ICardZBusGroup } from '../bus/bus-groups';
 import { IAluOperationBusPart, IDataBusPart } from '../bus/bus-parts';
@@ -27,7 +27,7 @@ export class AluLogicCard implements IAluLogicCard {
   private inputCPart: IDataBusPart | undefined;
   private aluOpPart: IAluOperationBusPart | undefined;
 
-  private valueOut: CardPart;
+  private valueOut: CardOutput;
 
   constructor() {
     this.notValue = BitValue.Zero;
@@ -35,7 +35,7 @@ export class AluLogicCard implements IAluLogicCard {
     this.orValue = BitValue.Zero;
     this.xorValue = BitValue.Zero;
     this.andValue = BitValue.Zero;
-    this.valueOut = new CardPart();
+    this.valueOut = new CardOutput();
   }
 
   connect(busGroup: ICardZBusGroup) {

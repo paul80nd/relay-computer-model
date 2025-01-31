@@ -1,5 +1,5 @@
 import { BitValue } from '../bit-value';
-import { CardPart } from './card-part';
+import { CardOutput, ICardOutput } from './card-output';
 import { ICardYBusGroup } from '../bus/bus-groups';
 import { IAddressBusPart, IDataBusPart, IMemoryBusPart } from '../bus/bus-parts';
 import { MemoryLines } from '../bus/bus-part-lines';
@@ -8,7 +8,7 @@ export interface IMemoryCard {
   memoryAddress: BitValue;
   memoryArray: number[];
   memoryData: BitValue;
-  memoryEnabled: CardPart;
+  memoryEnabled: ICardOutput;
   memoryCtrl: BitValue;
 
   connect(dataBus: ICardYBusGroup): void;
@@ -22,17 +22,17 @@ export class MemoryCard implements IMemoryCard {
   memoryArray: number[];
   memoryData: BitValue;
   memoryCtrl: BitValue;
-  memoryEnabled: CardPart;
+  memoryEnabled: CardOutput;
 
   private addressPart: IAddressBusPart | undefined;
   private dataPart: IDataBusPart | undefined;
   private memoryPart: IMemoryBusPart | undefined;
 
-  private dataOut: CardPart;
+  private dataOut: CardOutput;
 
   constructor() {
-    this.dataOut = new CardPart();
-    this.memoryEnabled = new CardPart();
+    this.dataOut = new CardOutput();
+    this.memoryEnabled = new CardOutput();
     this.memoryEnabled.value = this.memoryEnabled.value.flipBit(0);
     this.memoryAddress = BitValue.Zero;
     this.memoryArray = new Array(32768);

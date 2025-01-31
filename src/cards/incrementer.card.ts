@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { BitValue } from '../bit-value';
 import { ICardXBusGroup } from '../bus/bus-groups';
 import { RegAuxLines } from '../bus/bus-part-lines';
@@ -20,11 +20,11 @@ export class IncrementerCard implements IIncrementerCard {
 
   private addressPart: IAddressBusPart | undefined;
 
-  private incrementOut: CardPart;
+  private incrementOut: CardOutput;
 
   constructor() {
     this.increment = BitValue.Zero;
-    this.incrementOut = new CardPart();
+    this.incrementOut = new CardOutput();
     this.register = new RegisterCardPart(RegAuxLines.LIC, RegAuxLines.SIC);
   }
 

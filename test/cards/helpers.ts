@@ -1,4 +1,4 @@
-import { BitValue, CardPart } from "../../src";
+import { BitValue, CardOutput } from "../../src";
 import { BusFactory } from "../../src/bus/bus";
 import { BusGroupFactory } from "../../src/bus/bus-groups";
 import { BusPartFactory, IBusPart } from "../../src/bus/bus-parts";
@@ -16,7 +16,7 @@ export class TestFactory {
 
 export class ValuePart {
   private bp?: IBusPart;
-  private cp = new CardPart();
+  private cp = new CardOutput();
   connectOn(bp: IBusPart) { this.bp = bp; bp.connect(this.cp); }
   set(value: number) { this.cp.value = BitValue.fromUnsignedNumber(value); }
   clear() { this.cp.value = BitValue.Zero; }
@@ -26,7 +26,7 @@ type ValueExpect = jest.Expect & jest.Matchers<void>
 
 export class LinesPart {
   private bp?: IBusPart;
-  private cp = new CardPart();
+  private cp = new CardOutput();
   connectOn(bp: IBusPart) { this.bp = bp; bp.connect(this.cp); }
   flick(...linesToSet: number[]) { this.set(...linesToSet); this.clear(); }
   set(...linesToSet: number[]) { this.cp.value = linesToSet.reduce((p, c) => p.flipBit(c), BitValue.Zero); }

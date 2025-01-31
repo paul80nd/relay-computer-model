@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput, ICardOutput } from './card-output';
 import { ICardZBusGroup } from '../bus/bus-groups';
 import { IAluFunctionClBusPart, IAluOperationBusPart, IDataBusPart } from '../bus/bus-parts';
 import { AluFunctionClLines, AluOperationLines, ConditionLines } from '../bus/bus-part-lines';
@@ -6,36 +6,36 @@ import { BitValue } from '../bit-value';
 
 export interface IAluControlCard {
 
-  condition: CardPart;
+  condition: ICardOutput;
   func: BitValue;
   load: boolean;
   select: boolean;
-  operation: CardPart;
+  operation: ICardOutput;
 
   connect(dataBus: ICardZBusGroup): void;
 }
 
 export class AluControlCard implements IAluControlCard {
 
-  condition: CardPart;
+  condition: CardOutput;
   func: BitValue;
   load = false;
   select = false;
-  operation: CardPart;
+  operation: CardOutput;
 
   private aluOpPart: IAluOperationBusPart | undefined;
   private clPart: IAluFunctionClBusPart | undefined;
   private dataPart: IDataBusPart | undefined;
 
-  private conditionOut: CardPart;
-  private operationOut: CardPart;
+  private conditionOut: CardOutput;
+  private operationOut: CardOutput;
 
   constructor() {
-    this.condition = new CardPart();
+    this.condition = new CardOutput();
     this.func = BitValue.Zero;
-    this.conditionOut = new CardPart();
-    this.operation = new CardPart();
-    this.operationOut = new CardPart();
+    this.conditionOut = new CardOutput();
+    this.operation = new CardOutput();
+    this.operationOut = new CardOutput();
   }
 
   connect(busGroup: ICardZBusGroup) {

@@ -1,6 +1,6 @@
 import { BitValue } from '../bit-value';
 import { IObservable, Observable } from '../observable';
-import { CardPart } from '../cards/card-part';
+import { ICardOutput } from '../cards/card-output';
 
 /**
  * A bus part represents a number of related lines/wires which carry
@@ -11,9 +11,9 @@ export interface IBusPart extends IObservable<BitValue> {
   /** Gets the current value on the bus part */
   readonly value: BitValue;
   /** Connects this bus part to a card part value provider */
-  connect(provider: CardPart): void;
+  connect(provider: ICardOutput): void;
   /** Disconnect this bus part from a card part value provider */
-  disconnect(provider: CardPart): void;
+  disconnect(provider: ICardOutput): void;
 }
 
 /** Bus part for the 4 lines that carry the Abort value */
@@ -101,7 +101,7 @@ export class BusPartFactory implements IBusPartFactory {
 class BusPart extends Observable<BitValue> implements IBusPart {
 
   private _value: BitValue;
-  private connectedParts: CardPart[];
+  private connectedParts: ICardOutput[];
 
   constructor() {
     super();
@@ -113,12 +113,12 @@ class BusPart extends Observable<BitValue> implements IBusPart {
     return this._value;
   }
 
-  connect(part: CardPart) {
+  connect(part: ICardOutput) {
     this.connectedParts.push(part);
     part.subscribe(this.update);
   }
 
-  disconnect(part: CardPart) {
+  disconnect(part: ICardOutput) {
     this.connectedParts.splice(this.connectedParts.indexOf(part), 1);
     part.unsubscribe(this.update);
   }

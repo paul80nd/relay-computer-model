@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { BitValue } from '../bit-value';
 import { ICardWBusGroup } from '../bus/bus-groups';
 import { IAbortBusPart, IClockBusPart, IResetBusPart } from '../bus/bus-parts';
@@ -21,7 +21,7 @@ export class SequencerCard implements ISequencerCard {
 
   private lastClock = false;
 
-  private pulseOut: CardPart;
+  private pulseOut: CardOutput;
 
   private resetPart: IResetBusPart | undefined;
   private clockPart: IClockBusPart | undefined;
@@ -31,7 +31,7 @@ export class SequencerCard implements ISequencerCard {
     this.abort = BitValue.Zero;
     this.fsm = BitValue.Zero;
     this.pulse = BitValue.Zero;
-    this.pulseOut = new CardPart();
+    this.pulseOut = new CardOutput();
   }
 
   connect(busGroup: ICardWBusGroup) {

@@ -1,12 +1,12 @@
 import { BitValue } from "../bit-value";
 import { ICardXBusGroup } from "../bus/bus-groups";
 import { ClockCtrlLines, ClockLines } from "../bus/bus-part-lines";
-import { CardPart } from "./card-part";
+import { CardOutput, ICardOutput } from "./card-output";
 
 export interface IClockCard {
-  clockEnabled: CardPart;
-  clockType: CardPart;
-  clockSpeed: CardPart;
+  clockEnabled: ICardOutput;
+  clockType: ICardOutput;
+  clockSpeed: ICardOutput;
 
   clock: BitValue;
   stages: BitValue;
@@ -20,14 +20,14 @@ export interface IClockCard {
 
 export class ClockCard implements IClockCard {
 
-  clockEnabled: CardPart;
-  clockType: CardPart;
-  clockSpeed: CardPart;
+  clockEnabled: CardOutput;
+  clockType: CardOutput;
+  clockSpeed: CardOutput;
 
   clock: BitValue;
   stages: BitValue;
 
-  private clockOut: CardPart;
+  private clockOut: CardOutput;
 
   runCrystal = false;
   runRelay = false;
@@ -35,11 +35,11 @@ export class ClockCard implements IClockCard {
   delay = 0;
 
   constructor() {
-    this.clockOut = new CardPart();
-    this.clockEnabled = new CardPart();
+    this.clockOut = new CardOutput();
+    this.clockEnabled = new CardOutput();
     this.clockEnabled.value = this.clockEnabled.value.flipBit(0);
-    this.clockType = new CardPart();
-    this.clockSpeed = new CardPart();
+    this.clockType = new CardOutput();
+    this.clockSpeed = new CardOutput();
     this.clockSpeed.value = BitValue.fromUnsignedNumber(2);
     this.clock = BitValue.Zero;
     this.stages = BitValue.Zero;

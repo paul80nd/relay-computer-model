@@ -1,10 +1,10 @@
 import { BitValue } from '../../bit-value';
-import { CardPart } from '../card-part';
+import { CardOutput, ICardOutput } from '../card-output';
 import { IBusPart, IDataBusPart, IRegisterABCDBusPart } from '../../bus/bus-parts';
 
 export interface IRegisterCardPart {
 
-  value: CardPart;
+  value: ICardOutput;
   load: boolean;
   select: boolean;
 
@@ -12,30 +12,30 @@ export interface IRegisterCardPart {
 
   connect(dataPart: IDataBusPart, ctrlPart: IBusPart): void;
   connect(dataPart: IDataBusPart, ctrlPart: IBusPart, dataPartOut: IDataBusPart): void;
-  connectCardPart(cardPart: CardPart, ctrlPart: IBusPart, dataPartOut: IDataBusPart): void;
+  connectCardPart(cardPart: ICardOutput, ctrlPart: IBusPart, dataPartOut: IDataBusPart): void;
   connectDirect(registerConnect: IDataBusPart): void;
 }
 
 export class RegisterCardPart implements IRegisterCardPart {
 
-  value: CardPart;
+  value: CardOutput;
   load: boolean = false;
   select: boolean = false;
 
   isSelectable: boolean;
 
   private dataPart: IDataBusPart | undefined;
-  private cardPart: CardPart | undefined;
+  private cardPart: ICardOutput | undefined;
   private ctrlPart: IRegisterABCDBusPart | undefined;
 
-  private valueOut: CardPart;
+  private valueOut: CardOutput;
 
   constructor(private loadLine: number, private selectLine: number | undefined = undefined) {
 
     this.isSelectable = (selectLine !== undefined);
 
-    this.value = new CardPart();
-    this.valueOut = new CardPart();
+    this.value = new CardOutput();
+    this.valueOut = new CardOutput();
   }
 
   connect(dataPartIn: IDataBusPart, ctrlPart: IBusPart, dataPartOut: IDataBusPart | undefined = undefined) {
@@ -47,7 +47,7 @@ export class RegisterCardPart implements IRegisterCardPart {
     // Outputs
     if (dataPartOut) { dataPartOut.connect(this.valueOut); }
   }
-  connectCardPart(cardPart: CardPart, ctrlPart: IBusPart, dataPartOut: IDataBusPart) {
+  connectCardPart(cardPart: ICardOutput, ctrlPart: IBusPart, dataPartOut: IDataBusPart) {
     // Inputs
     this.cardPart = cardPart;
     this.cardPart.subscribe(this.update);

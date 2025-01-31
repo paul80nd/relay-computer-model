@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { BitValue } from '../bit-value';
 import { ICardWBusGroup } from '../bus/bus-groups';
 import { IInstructionBusPart } from '../bus/bus-parts';
@@ -17,11 +17,11 @@ export class DecoderCard implements IDecoderCard {
 
   private instrPart: IInstructionBusPart | undefined;
 
-  private operationOut: CardPart;
+  private operationOut: CardOutput;
 
   constructor() {
     this.operation = BitValue.Zero;
-    this.operationOut = new CardPart();
+    this.operationOut = new CardOutput();
   }
 
   connect(busGroup: ICardWBusGroup) {

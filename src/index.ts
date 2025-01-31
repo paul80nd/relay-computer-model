@@ -11,7 +11,7 @@ export {
 } from './bus/bus-part-lines';
 
 export {
-  CardPart,
+  ICardOutput, CardOutput,
   IAluArithmeticCard, IAluControlCard, IAluLogicCard, IAuxControlCard,
   IClockCard, IControlCard, IControlSwitchesCard, IDecoderCard,
   IDisplayACard, IDisplayBCard, IIncrementerCard, IMemoryCard,

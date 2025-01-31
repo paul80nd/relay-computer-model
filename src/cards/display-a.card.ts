@@ -1,4 +1,4 @@
-import { CardPart } from './card-part';
+import { CardOutput } from './card-output';
 import { BitValue } from '../bit-value';
 import { IDisplayABusGroup } from '../bus/bus-groups';
 import {
@@ -10,15 +10,15 @@ import {
 
 export interface IDisplayACard {
 
-  a1a: CardPart;
-  a1bClock: CardPart;
-  a1bI2b: CardPart;
-  a1bMemory: CardPart;
-  a1cAuxReg: CardPart;
-  a1cCl: CardPart;
-  a2abReg: CardPart;
-  a2b: CardPart;
-  a2c: CardPart;
+  a1a: CardOutput;
+  a1bClock: CardOutput;
+  a1bI2b: CardOutput;
+  a1bMemory: CardOutput;
+  a1cAuxReg: CardOutput;
+  a1cCl: CardOutput;
+  a2abReg: CardOutput;
+  a2b: CardOutput;
+  a2c: CardOutput;
 
   a1aIn: BitValue;
   a1bClockIn: BitValue;
@@ -35,15 +35,15 @@ export interface IDisplayACard {
 
 export class DisplayACard implements IDisplayACard {
 
-  a1a: CardPart;
-  a1bClock: CardPart;
-  a1bI2b: CardPart;
-  a1bMemory: CardPart;
-  a1cAuxReg: CardPart;
-  a1cCl: CardPart;
-  a2abReg: CardPart;
-  a2b: CardPart;
-  a2c: CardPart;
+  a1a: CardOutput;
+  a1bClock: CardOutput;
+  a1bI2b: CardOutput;
+  a1bMemory: CardOutput;
+  a1cAuxReg: CardOutput;
+  a1cCl: CardOutput;
+  a2abReg: CardOutput;
+  a2b: CardOutput;
+  a2c: CardOutput;
 
   a1aIn: BitValue;
   a1bClockIn: BitValue;
@@ -66,15 +66,15 @@ export class DisplayACard implements IDisplayACard {
   private a2cPart: IAluOperationBusPart | undefined;
 
   constructor() {
-    this.a1a = new CardPart();
-    this.a1bClock = new CardPart();
-    this.a1bI2b = new CardPart();
-    this.a1bMemory = new CardPart();
-    this.a1cAuxReg = new CardPart();
-    this.a1cCl = new CardPart();
-    this.a2abReg = new CardPart();
-    this.a2b = new CardPart();
-    this.a2c = new CardPart();
+    this.a1a = new CardOutput();
+    this.a1bClock = new CardOutput();
+    this.a1bI2b = new CardOutput();
+    this.a1bMemory = new CardOutput();
+    this.a1cAuxReg = new CardOutput();
+    this.a1cCl = new CardOutput();
+    this.a2abReg = new CardOutput();
+    this.a2b = new CardOutput();
+    this.a2c = new CardOutput();
 
     this.a1aIn = BitValue.Zero;
     this.a1bClockIn = BitValue.Zero;
