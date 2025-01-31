@@ -17,12 +17,12 @@ export interface IComputer {
 }
 
 export interface IComputerFactory {
-  createComputer(): IComputer;
+  createComputer(withoutClock?:boolean): IComputer;
 }
 
 export class ComputerFactory implements IComputerFactory {
 
-  createComputer(): IComputer {
+  createComputer(clockDisabled?:boolean): IComputer {
 
     const busFactory = new BusFactory(new BusPartFactory());
     const busGroupFactory = new BusGroupFactory(busFactory);
@@ -53,7 +53,7 @@ export class ComputerFactory implements IComputerFactory {
     wBackplane.connect(wBusGroup);
 
     const xBusGroup = cables.x;
-    const xBackplane = backplaneFactory.createXBackplane();
+    const xBackplane = backplaneFactory.createXBackplane(clockDisabled);
     xBackplane.connect(xBusGroup);
 
     const yBusGroup = cables.y;

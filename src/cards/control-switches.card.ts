@@ -19,9 +19,9 @@ export interface IControlSwitchesCard {
   examine(): void;
   examineNext(): void;
   loadAddr(): void;
-  toggleClock(): void;
-  toggleReset(): void;
-  toggleRestart(): void;
+  toggleClock(delay?: number): void;
+  toggleReset(delay?: number): void;
+  toggleRestart(delay?: number): void;
   toggleRunStop(): void;
 }
 
@@ -209,42 +209,45 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
     }
   }
 
-  toggleClock(): void {
+  toggleClock(delay?: number): void {
     if (!this.clock) {
       this.clock = true;
       if (!this.run) { this.clockOut.value = this.clockOut.value.flipBit(ClockLines.CLK); }
-      setTimeout(() => {
-        this.clock = false;
-        if (this.clockOut.value.bit(ClockLines.CLK)) {
-          this.clockOut.value = this.clockOut.value.flipBit(ClockLines.CLK);
-        }
-      }, 500);
+      if (delay) { setTimeout(() => this.restoreClock, delay); } else { this.restoreClock(); }
+    }
+  }
+  private restoreClock() {
+    this.clock = false;
+    if (this.clockOut.value.bit(ClockLines.CLK)) {
+      this.clockOut.value = this.clockOut.value.flipBit(ClockLines.CLK);
     }
   }
 
-  toggleReset(): void {
+  toggleReset(delay?: number): void {
     if (!this.reset) {
       this.reset = true;
       if (!this.run) { this.resetOut.value = this.resetOut.value.flipBit(ResetLines.RES); }
-      setTimeout(() => {
-        this.reset = false;
-        if (this.resetOut.value.bit(ResetLines.RES)) {
-          this.resetOut.value = this.resetOut.value.flipBit(ResetLines.RES);
-        }
-      }, 500);
+      if (delay) { setTimeout(() => this.restoreReset, delay); } else { this.restoreReset(); }
+    }
+  }
+  private restoreReset() {
+    this.reset = false;
+    if (this.resetOut.value.bit(ResetLines.RES)) {
+      this.resetOut.value = this.resetOut.value.flipBit(ResetLines.RES);
     }
   }
 
-  toggleRestart(): void {
+  toggleRestart(delay?: number): void {
     if (!this.restart) {
       this.restart = true;
       this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
-      setTimeout(() => {
-        this.restart = false;
-        if (this.clockCtrlOut.value.bit(ClockCtrlLines.RST)) {
-          this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
-        }
-      }, 500);
+      if (delay) { setTimeout(() => this.restoreRestart, delay); } else { this.restoreRestart(); }
+    }
+  }
+  private restoreRestart() {
+    this.restart = false;
+    if (this.clockCtrlOut.value.bit(ClockCtrlLines.RST)) {
+      this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
     }
   }
 

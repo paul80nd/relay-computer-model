@@ -16,7 +16,7 @@ export interface ICardFactory {
   createAluControl(): IAluControlCard;
   createAluLogic(): IAluLogicCard;
   createCards(): ICards;
-  createClock(): IClockCard;
+  createClock(clockDisabled?:boolean): IClockCard;
   createControl(): IControlCard;
   createDecoder(): IDecoderCard;
   createIncrementer(): IIncrementerCard;
@@ -66,7 +66,7 @@ export class CardFactory implements ICardFactory {
   createAluArithmetic(): IAluArithmeticCard { return new AluArithmeticCard(); }
   createAluControl(): IAluControlCard { return new AluControlCard(); }
   createAluLogic(): IAluLogicCard { return new AluLogicCard(); }
-  createClock(): IClockCard { return new ClockCard(); }
+  createClock(clockDisabled?:boolean): IClockCard { return new ClockCard(clockDisabled); }
   createControl(): IControlCard { return new ControlCard(); }
   createDecoder(): IDecoderCard { return new DecoderCard(); }
   createIncrementer(): IIncrementerCard { return new IncrementerCard(); }

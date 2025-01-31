@@ -21,6 +21,7 @@
     "compile": "tsc -p . && npm run lint",
     "clean": "rimraf lib",
     "test": "npm run compile && jest lib/test/**/*.js",
+    "testx": "tsc -p . && jest lib/test/**/*.js --detectOpenHandles",
     "testcov": "npm run compile && jest lib/test/**/*.js --coverage",
     "lint": "eslint src/**/*.ts & eslint test/**/*.ts",
     "watch": "tsc --watch -p ."

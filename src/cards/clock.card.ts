@@ -34,10 +34,10 @@ export class ClockCard implements IClockCard {
   freeze = true;  // freeze line will be on by default
   delay = 0;
 
-  constructor() {
+  constructor(clockDisabled?:boolean) {
     this.clockOut = new CardOutput();
     this.clockEnabled = new CardOutput();
-    this.clockEnabled.value = this.clockEnabled.value.flipBit(0);
+    this.clockEnabled.value = this.clockEnabled.value.flipBit(clockDisabled ? 1 : 0);
     this.clockType = new CardOutput();
     this.clockSpeed = new CardOutput();
     this.clockSpeed.value = BitValue.fromUnsignedNumber(2);

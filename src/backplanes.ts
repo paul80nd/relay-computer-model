@@ -62,9 +62,9 @@ export class BackplaneFactory implements IBackplaneFactory {
     );
   }
 
-  createXBackplane(): IXBackplane {
+  createXBackplane(clockDisabled?:boolean): IXBackplane {
     return new XBackplane(
-      this.cardFactory.createClock(),
+      this.cardFactory.createClock(clockDisabled),
       this.cardFactory.createIncrementer(),
       this.cardFactory.createRegisterI(),
       this.cardFactory.createRegisterPC()
