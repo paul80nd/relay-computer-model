@@ -1,25 +1,17 @@
-import { ComputerFactory } from "../../src";
-import { ClockCtrlLines } from "../../src/bus/bus-part-lines";
+import { TestComputer } from "./helpers";
 
-const rcf = new ComputerFactory();
-const rc = rcf.createComputer(true);
+test('set a 9', function () {
+  const sut = new TestComputer();
+  sut.runToHalt([0x49,0xAE]);
 
-const memory = rc.yBackplane.memory;
-const pc = rc.xBackplane.registerPC;
-const regA = rc.zBackplane.registerAD.registerA;
+  expect(sut.pcAddress).toBe(0x0002);
+  expect(sut.registerA).toBe(0x09);
+});
 
-rc.controlSwitchesCard.toggleReset();
+test('set b -5', function () {
+  const sut = new TestComputer();
+  sut.runToHalt([0x7B,0xAE]);
 
-function runToHalt() {
-  while (!rc.displayBCard.clockCtrl.bit(ClockCtrlLines.HLT)) {
-    rc.controlSwitchesCard.toggleClock();
-  }
-}
-
-test('set a,9', function () {
-  memory.loadProgram(0, [0x49,0xAE]);
-  runToHalt();
-
-  expect(pc.pcAddress).toBe(0x0002);
-  expect(regA.value.value.toUnsignedNumber()).toBe(0x09);
+  expect(sut.pcAddress).toBe(0x0002);
+  expect(sut.registerB).toBe(0xFB);
 });
