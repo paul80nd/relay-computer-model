@@ -92,6 +92,8 @@ export enum OperationLines {
   ISET,
   /** MOVE-8 */
   IMV8,
+  /** MOVE-16 */
+  IM16,
   /** ALU */
   IALU,
   /** GTO */
