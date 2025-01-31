@@ -444,6 +444,8 @@ export class ControlCard implements IControlCard {
       const pulse = this.pulsePart.value;
       const instr = this.instructionPart.value;
       let clockCtrl = BitValue.Zero;
+      let sds = BitValue.Zero;
+      let regAux = BitValue.Zero;
       let abort = BitValue.Zero;
 
       if (pulse.bit(PulseLines.D)) {
@@ -451,15 +453,32 @@ export class ControlCard implements IControlCard {
         abort = abort.flipBit(AbortLines.AT10);
       }
 
-      if (pulse.bit(PulseLines.G)) {
-        if (instr.bit(1)) {
+      if (instr.bit(1)) {
+        if (!instr.bit(0)) {
           // HALT
-          clockCtrl = clockCtrl.flipBit(ClockCtrlLines.HLT);
+          if (pulse.bit(PulseLines.G)) {
+            clockCtrl = clockCtrl.flipBit(ClockCtrlLines.HLT);
+          }
+        } else {
+          // HALT & RELOAD
+          if (pulse.bit(PulseLines.F)) {
+            sds = sds.flipBit(DataSwitchGateLines.SAS);
+          }
+          if (pulse.bit(PulseLines.G)) {
+            regAux = regAux.flipBit(RegAuxLines.LPC);
+            clockCtrl = clockCtrl.flipBit(ClockCtrlLines.HLT);
+          }
         }
       }
 
+      if (!this.auxReg.isEqualTo(regAux)) { this.auxReg = regAux; }
+      this.auxRegOut.value = regAux;
+
       if (!this.clockCtrl.isEqualTo(clockCtrl)) { this.clockCtrl = clockCtrl; }
       this.clockCtrlOut.value = clockCtrl;
+
+      if (!this.sds.isEqualTo(sds)) { this.sds = sds; }
+      this.sdsOut.value = sds;
 
       if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
       this.abortOut.value = abort;
