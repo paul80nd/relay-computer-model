@@ -148,10 +148,8 @@ export class ControlCard implements IControlCard {
         auxReg = auxReg.flipBit(RegAuxLines.LPC);
       }
 
-      if (!this.auxReg.isEqualTo(auxReg)) { this.auxReg = auxReg; }
-      this.auxRegOut.value = auxReg;
-      if (!this.memory.isEqualTo(memory)) { this.memory = memory; }
-      this.memoryOut.value = memory;
+      this.sendAuxReg(auxReg);
+      this.sendMemory(memory);
     }
   }
 
@@ -182,16 +180,12 @@ export class ControlCard implements IControlCard {
         if (instr.bit(2)) { aluFunc = aluFunc.flipBit(AluFunctionClLines.F2); }
       }
 
-      if (!this.regABCD.isEqualTo(regABCD)) { this.regABCD = regABCD; }
-      this.regABCDOut.value = regABCD;
-
-      if (!this.aluFunc.isEqualTo(aluFunc)) { this.aluFunc = aluFunc; }
-      this.aluFuncOut.value = aluFunc;
-
-      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
-      this.abortOut.value = abort;
+      this.sendRegABCD(regABCD);
+      this.sendAluFunc(aluFunc);
+      this.sendAbort(abort);
     }
   }
+
   private updateSet() {
     if (this.pulsePart && this.instructionPart) {
       const pulse = this.pulsePart.value;
@@ -215,14 +209,9 @@ export class ControlCard implements IControlCard {
         i2b = i2b.flipBit(I2BLines.I2B);
       }
 
-      if (!this.regABCD.isEqualTo(regABCD)) { this.regABCD = regABCD; }
-      this.regABCDOut.value = regABCD;
-
-      if (!this.i2b.isEqualTo(i2b)) { this.i2b = i2b; }
-      this.i2bOut.value = i2b;
-
-      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
-      this.abortOut.value = abort;
+      this.sendRegABCD(regABCD);
+      this.sendI2B(i2b);
+      this.sendAbort(abort);
     }
   }
 
@@ -302,14 +291,9 @@ export class ControlCard implements IControlCard {
         abort = abort.flipBit(AbortLines.AT08);
       }
 
-      if (!this.regABCD.isEqualTo(regABCD)) { this.regABCD = regABCD; }
-      this.regABCDOut.value = regABCD;
-
-      if (!this.regJMXY.isEqualTo(regJMXY)) { this.regJMXY = regJMXY; }
-      this.regJMXYOut.value = regJMXY;
-
-      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
-      this.abortOut.value = abort;
+      this.sendRegABCD(regABCD);
+      this.sendRegJMXY(regJMXY);
+      this.sendAbort(abort);
     }
   }
 
@@ -353,17 +337,10 @@ export class ControlCard implements IControlCard {
         }
       }
 
-      if (!this.auxReg.isEqualTo(regAux)) { this.auxReg = regAux; }
-      this.auxRegOut.value = regAux;
-
-      if (!this.sds.isEqualTo(sds)) { this.sds = sds; }
-      this.sdsOut.value = sds;
-
-      if (!this.regJMXY.isEqualTo(regJMXY)) { this.regJMXY = regJMXY; }
-      this.regJMXYOut.value = regJMXY;
-
-      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
-      this.abortOut.value = abort;
+      this.sendAuxReg(regAux);
+      this.sendSds(sds);
+      this.sendRegJMXY(regJMXY);
+      this.sendAbort(abort);
     }
   }
 
@@ -430,12 +407,9 @@ export class ControlCard implements IControlCard {
         }
       }
 
-      if (!this.auxReg.isEqualTo(auxReg)) { this.auxReg = auxReg; }
-      this.auxRegOut.value = auxReg;
-      if (!this.memory.isEqualTo(memory)) { this.memory = memory; }
-      this.memoryOut.value = memory;
-      if (!this.regJMXY.isEqualTo(regJMXY)) { this.regJMXY = regJMXY; }
-      this.regJMXYOut.value = regJMXY;
+      this.sendAuxReg(auxReg);
+      this.sendMemory(memory);
+      this.sendRegJMXY(regJMXY);
     }
   }
 
@@ -471,17 +445,20 @@ export class ControlCard implements IControlCard {
         }
       }
 
-      if (!this.auxReg.isEqualTo(regAux)) { this.auxReg = regAux; }
-      this.auxRegOut.value = regAux;
-
-      if (!this.clockCtrl.isEqualTo(clockCtrl)) { this.clockCtrl = clockCtrl; }
-      this.clockCtrlOut.value = clockCtrl;
-
-      if (!this.sds.isEqualTo(sds)) { this.sds = sds; }
-      this.sdsOut.value = sds;
-
-      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
-      this.abortOut.value = abort;
+      this.sendAuxReg(regAux);
+      this.sendClockCtrl(clockCtrl);
+      this.sendSds(sds);
+      this.sendAbort(abort);
     }
   }
+
+  private sendAbort(v: BitValue) { if (!this.abort.isEqualTo(v)) { this.abort = v; } this.abortOut.value = v; }
+  private sendAluFunc(v: BitValue) { if (!this.aluFunc.isEqualTo(v)) { this.aluFunc = v; } this.aluFuncOut.value = v; }
+  private sendAuxReg(v: BitValue) { if (!this.auxReg.isEqualTo(v)) { this.auxReg = v; } this.auxRegOut.value = v; }
+  private sendClockCtrl(v: BitValue) { if (!this.clockCtrl.isEqualTo(v)) { this.clockCtrl = v; } this.clockCtrlOut.value = v; }
+  private sendI2B(v: BitValue) { if (!this.i2b.isEqualTo(v)) { this.i2b = v; } this.i2bOut.value = v; }
+  private sendMemory(v: BitValue) { if (!this.memory.isEqualTo(v)) { this.memory = v; } this.memoryOut.value = v; }
+  private sendRegABCD(v: BitValue) { if (!this.regABCD.isEqualTo(v)) { this.regABCD = v; } this.regABCDOut.value = v; }
+  private sendRegJMXY(v: BitValue) { if (!this.regJMXY.isEqualTo(v)) { this.regJMXY = v; } this.regJMXYOut.value = v; }
+  private sendSds(v: BitValue) { if (!this.sds.isEqualTo(v)) { this.sds = v; } this.sdsOut.value = v; }
 }
