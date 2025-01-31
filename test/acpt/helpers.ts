@@ -37,4 +37,12 @@ export class TestComputer {
   public get registerM2(): number {
     return this.sut.yBackplane.registerM.register.valueLo.value.toUnsignedNumber();
   }
+
+  public get registerX(): number {
+    return this.sut.yBackplane.registerXY.register.valueHi.value.toUnsignedNumber();
+  }
+
+  public get registerY(): number {
+    return this.sut.yBackplane.registerXY.register.valueLo.value.toUnsignedNumber();
+  }
 }
