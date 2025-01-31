@@ -7,7 +7,7 @@ import {
   IConditionBusPart
 } from '../bus/bus-parts';
 import {
-  AbortLines, AluFunctionClLines, I2BLines, MemoryLines,
+  AbortLines, AluFunctionClLines, I2BLines, MemoryLines, DataSwitchGateLines,
   OperationLines, PulseLines, RegABCDLines, RegAuxLines, RegJMXYLines, ConditionLines, ClockCtrlLines
 } from '../bus/bus-part-lines';
 
@@ -35,6 +35,7 @@ export class ControlCard implements IControlCard {
   memory: BitValue;
   regABCD: BitValue;
   regJMXY: BitValue;
+  sds: BitValue;
 
   private abortOut: CardPart;
   private aluFuncOut: CardPart;
@@ -44,6 +45,7 @@ export class ControlCard implements IControlCard {
   private memoryOut: CardPart;
   private regABCDOut: CardPart;
   private regJMXYOut: CardPart;
+  private sdsOut: CardPart;
 
   private aluFuncClPart: IAluFunctionClBusPart | undefined;
   private aluConditionPart: IConditionBusPart | undefined;
@@ -68,6 +70,8 @@ export class ControlCard implements IControlCard {
     this.regABCDOut = new CardPart();
     this.regJMXY = BitValue.Zero;
     this.regJMXYOut = new CardPart();
+    this.sds = BitValue.Zero;
+    this.sdsOut = new CardPart();
   }
 
   connect(busGroup: ICardWBusGroup) {
@@ -91,6 +95,7 @@ export class ControlCard implements IControlCard {
     busGroup.controlYBus.regJMXYPart.connect(this.regJMXYOut);
     busGroup.controlZBus.regABCDPart.connect(this.regABCDOut);
     busGroup.operationBus.abortPart.connect(this.abortOut);
+    busGroup.controlYBus.sdsPart.connect(this.sdsOut)
   }
 
   private update = () => {
@@ -101,6 +106,8 @@ export class ControlCard implements IControlCard {
 
       if (operation.bit(OperationLines.IMV8)) {
         this.updateMv8();
+      } else if (operation.bit(OperationLines.IM16)) {
+        this.updateMv16();
       } else if (operation.bit(OperationLines.ISET)) {
         this.updateSet();
       } else if (operation.bit(OperationLines.IALU)) {
@@ -297,6 +304,60 @@ export class ControlCard implements IControlCard {
 
       if (!this.regABCD.isEqualTo(regABCD)) { this.regABCD = regABCD; }
       this.regABCDOut.value = regABCD;
+
+      if (!this.regJMXY.isEqualTo(regJMXY)) { this.regJMXY = regJMXY; }
+      this.regJMXYOut.value = regJMXY;
+
+      if (!this.abort.isEqualTo(abort)) { this.abort = abort; }
+      this.abortOut.value = abort;
+    }
+  }
+
+  private updateMv16() {
+    if (this.pulsePart && this.instructionPart) {
+      const pulse = this.pulsePart.value;
+      const instr = this.instructionPart.value;
+      let regJMXY = BitValue.Zero;
+      let regAux = BitValue.Zero;
+      let sds = BitValue.Zero;
+      let abort = BitValue.Zero;
+
+      if (pulse.bit(PulseLines.D)) {
+        // ABT-10
+        abort = abort.flipBit(AbortLines.AT10);
+      }
+
+      if (pulse.bit(PulseLines.F)) {
+        // REG-SEL
+        if (!instr.bit(1)) {
+          if (!instr.bit(0)) {
+            regJMXY = regJMXY.flipBit(RegJMXYLines.SEM);
+          } else {
+            regJMXY = regJMXY.flipBit(RegJMXYLines.SXY);
+          }
+        } else {
+          if (!instr.bit(0)) {
+            regJMXY = regJMXY.flipBit(RegJMXYLines.SEJ);
+          } else {
+            sds = sds.flipBit(DataSwitchGateLines.SAS);
+          }
+        }
+      }
+
+      if (pulse.bit(PulseLines.G)) {
+        // REG-LD
+        if (!instr.bit(2)) {
+          regJMXY = regJMXY.flipBit(RegJMXYLines.LXY);
+        } else {
+          regAux = regAux.flipBit(RegAuxLines.LPC);
+        }
+      }
+
+      if (!this.auxReg.isEqualTo(regAux)) { this.auxReg = regAux; }
+      this.auxRegOut.value = regAux;
+
+      if (!this.sds.isEqualTo(sds)) { this.sds = sds; }
+      this.sdsOut.value = sds;
 
       if (!this.regJMXY.isEqualTo(regJMXY)) { this.regJMXY = regJMXY; }
       this.regJMXYOut.value = regJMXY;
