@@ -34,6 +34,11 @@ test('set E', function () {
   expectPart(xbus.i2bPart).hasLinesSet(I2BLines.I2B);
 });
 
+// Load Immediate - SETAB - 8 Cycles
+// 01 rddddd
+// r = destination register (0-A, 1-B)
+// ddddd = value (-16..15)
+
 test('set dest', function () {
   pulse.set(PulseLines.D);
   inst.set(0b01000000);

@@ -34,6 +34,11 @@ test('alu E', function () {
   expectPart(cibus.aluFunctionClPart).hasLinesSet(AluFunctionClLines.F0, AluFunctionClLines.F1, AluFunctionClLines.F2);
 });
 
+// ALU Operation - ALU - 8 Cycles
+// 1000 rfff
+// r = destination register (0-A, 1-D)
+// fff = function code (000-NOP, 001-ADD, 010-INC, 011-AND, 100-OR, 101-XOR, 110-NOT, 111-SHL)
+
 test('alu dest', function () {
   pulse.set(PulseLines.D);
   inst.set(0b10001111);

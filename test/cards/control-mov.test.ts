@@ -32,6 +32,11 @@ test('mov D', function () {
   expectPart(opbus.abortPart).hasLinesSet(AbortLines.AT08);
 });
 
+// 8-Bit Move - MOV8 - 8 Cycles
+// 00 ddd sss
+// ddd = destination register (000-A, 001-B, 010-C, 011-D, 100-M1, 101-M2, 110-X, 111-Y)
+// sss = source register      (000-A, 001-B, 010-C, 011-D, 100-M1, 101-M2, 110-X, 111-Y)
+
 test('mov src', function () {
   pulse.set(PulseLines.C);
   inst.set(0b00000000);

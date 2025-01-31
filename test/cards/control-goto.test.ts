@@ -99,6 +99,17 @@ test('goto T', function () {
   expectPart(ybus.regJMXYPart).hasLinesSet();
 });
 
+// Branch/Call - GOTO - 24 Cycles
+// 11dscznx hhhhhhhh llllllll
+// d = destination register (0-M, 1-J)
+// s = 1 = load PC if sign bit is set (if negative); 0 = ignore sign bit
+// c = 1 = load PC if carry bit is set (if carry); 0 = ignore carry bit
+// z = 1 = load PC if zero bit set (if result is zero); 0 = ignore if zero bit set
+// n = 1 = load PC if zero bit clear (if result is not zero); 0 = ignore if zero bit clear
+// x = 1 = copy PC to XY; 0 = no copy
+// hhhhhhhh = address high byte (to set in M2/J2)
+// llllllll = address low byte (to set in M1/J1)
+
 test('goto LD-M1/J1', function () {
   pulse.set(PulseLines.K);
   inst.set(0b11000000);

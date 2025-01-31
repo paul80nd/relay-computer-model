@@ -24,6 +24,10 @@ test('misc', function () {
   expectPart(opbus.abortPart).hasLinesSet(AbortLines.AT10);
 });
 
+// Halt - MISC - 10 Cycles
+// 1010111 r
+// r = reload program counter (0-no reload, 1-reload from switches)
+
 test('hlt', function () {
   pulse.set(PulseLines.G);
   inst.set(0b10101110);

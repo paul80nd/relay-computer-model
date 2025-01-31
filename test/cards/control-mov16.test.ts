@@ -18,11 +18,6 @@ const opbus = bgs.w.operationBus;
 
 op.set(OperationLines.IM16);
 
-// 16-Bit Move - MOV16 - 10 Cycles
-// 10100 dss
-// d = dest reg (0-XY or 1-PC)
-// ss = src reg (00-M, 01-XY, 10-J, 11-AS)
-
 test('mov C', function () {
   inst.set(0b10100000);
   pulse.set(PulseLines.C);
@@ -46,6 +41,11 @@ test('mov G', function () {
   pulse.set(PulseLines.G);
   expectPart(ybus.regJMXYPart).hasLinesSet(RegJMXYLines.LXY);
 });
+
+// 16-Bit Move - MOV16 - 10 Cycles
+// 10100 dss
+// d = dest reg (0-XY or 1-PC)
+// ss = src reg (00-M, 01-XY, 10-J, 11-AS)
 
 test('mov src', function () {
   pulse.set(PulseLines.F);
