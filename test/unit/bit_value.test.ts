@@ -72,12 +72,12 @@ test('increment', function () {
 });
 
 test('not', function () {
-  let test = sut.BitValue.fromUnsignedNumber(0b10101100);
+  const test = sut.BitValue.fromUnsignedNumber(0b10101100);
   expect(test.not().cap(8).toUnsignedNumber()).toBe(0b01010011);
 });
 
 test('shiftLeft', function () {
-  let test = sut.BitValue.fromUnsignedNumber(0b10101100);
+  const test = sut.BitValue.fromUnsignedNumber(0b10101100);
   expect(test.shiftLeft(8).toUnsignedNumber()).toBe(0b01011001); // testing rotate left
 });
 
