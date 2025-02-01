@@ -45,6 +45,11 @@ test('load', function () {
   expectPart(cpop).hasLinesSet(OperationLines.ILOD);
 });
 
+test('incxy', function () {
+  inst.set(0b10110000);
+  expectPart(cpop).hasLinesSet(OperationLines.IINC);
+});
+
 test('misc', function () {
   inst.set(0b10101110);
   expectPart(cpop).hasLinesSet(OperationLines.IMSC);

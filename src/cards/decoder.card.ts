@@ -71,6 +71,10 @@ export class DecoderCard implements IDecoderCard {
           // 10101xxx MISC
           oper = oper.flipBit(OperationLines.IMSC);
         }
+        else if (opCode.bit(5) && opCode.bit(4) && !opCode.bit(3) && !opCode.bit(2) && !opCode.bit(1)) {
+          // 1011000x INCXY
+          oper = oper.flipBit(OperationLines.IINC);
+        }
       }
 
       if (!this.operation.isEqualTo(oper)) { this.operation = oper; }

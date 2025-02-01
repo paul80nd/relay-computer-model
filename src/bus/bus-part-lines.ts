@@ -102,6 +102,8 @@ export enum OperationLines {
   ISTR,
   /** LOAD */
   ILOD,
+  /** INC-XY */
+  IINC,
   /** MISC */
   IMSC
 }

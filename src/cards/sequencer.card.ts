@@ -70,8 +70,8 @@ export class SequencerCard implements ISequencerCard {
       if (clock !== this.lastClock) {
         this.lastClock = clock;
         this.fsm = this.fsm.shiftLeft(24);
-        if (this.fsm.bit(15) && this.abort.bit(AbortLines.AT14)) {
-          this.fsm = this.fsm.flipBit(15);
+        if (this.fsm.bit(14) && this.abort.bit(AbortLines.AT14)) {
+          this.fsm = this.fsm.flipBit(14);
           this.fsm = this.fsm.flipBit(0);
         }
         if (this.fsm.bit(12) && this.abort.bit(AbortLines.AT12)) {

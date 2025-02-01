@@ -107,7 +107,6 @@ test('14 cycle', function () {
   abort.clear();
 
   clockTick(); checkPulses("clk 14");
-  clockTick(); checkPulses("clk 15");
 });
 
 test('24 cycle', function () {

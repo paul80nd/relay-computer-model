@@ -116,6 +116,8 @@ export class ControlCard implements IControlCard {
         this.updateStore();
       } else if (operation.bit(OperationLines.ILOD)) {
         this.updateLoad();
+      } else if (operation.bit(OperationLines.IINC)) {
+        this.updateIncXY();
       } else if (operation.bit(OperationLines.IGTO)) {
         this.updateGoto();
       } else if (operation.bit(OperationLines.IMSC)) {
@@ -433,6 +435,44 @@ export class ControlCard implements IControlCard {
 
       this.sendMemory(memory);
       this.sendRegABCD(regABCD);
+      this.sendRegJMXY(regJMXY);
+      this.sendAbort(abort);
+    }
+  }
+
+  private updateIncXY() {
+    if (this.pulsePart && this.instructionPart) {
+      const pulse = this.pulsePart.value;
+      let auxReg = this.auxReg;
+      let regJMXY = BitValue.Zero;
+      let abort = BitValue.Zero;
+
+      if (pulse.bit(PulseLines.D)) {
+        // ABT-14
+        abort = abort.flipBit(AbortLines.AT14);
+      }
+
+      if (pulse.bit(PulseLines.F)) {
+        // SEL-XY
+        regJMXY = regJMXY.flipBit(RegJMXYLines.SXY);
+      }
+
+      if (pulse.bit(PulseLines.G)) {
+        // LD-INC
+        auxReg = auxReg.flipBit(RegAuxLines.LIC);
+      }
+
+      if (pulse.bit(PulseLines.H)) {
+        // SEL-INC
+        auxReg = auxReg.flipBit(RegAuxLines.SIC);
+      }
+
+      if (pulse.bit(PulseLines.I)) {
+        // LD-XY
+        regJMXY = regJMXY.flipBit(RegJMXYLines.LXY);
+      }
+
+      this.sendAuxReg(auxReg);
       this.sendRegJMXY(regJMXY);
       this.sendAbort(abort);
     }
