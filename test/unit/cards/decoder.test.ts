@@ -40,6 +40,11 @@ test('store', function () {
   expectPart(cpop).hasLinesSet(OperationLines.ISTR);
 });
 
+test('load', function () {
+  inst.set(0b10010000);
+  expectPart(cpop).hasLinesSet(OperationLines.ILOD);
+});
+
 test('misc', function () {
   inst.set(0b10101110);
   expectPart(cpop).hasLinesSet(OperationLines.IMSC);

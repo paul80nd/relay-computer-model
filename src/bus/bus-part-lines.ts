@@ -100,6 +100,8 @@ export enum OperationLines {
   IGTO,
   /** STORE */
   ISTR,
+  /** LOAD */
+  ILOD,
   /** MISC */
   IMSC
 }
