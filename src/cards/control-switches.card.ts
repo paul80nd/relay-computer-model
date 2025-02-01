@@ -213,7 +213,7 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
     if (!this.clock) {
       this.clock = true;
       if (!this.run) { this.clockOut.value = this.clockOut.value.flipBit(ClockLines.CLK); }
-      if (delay) { setTimeout(() => this.restoreClock, delay); } else { this.restoreClock(); }
+      if (delay) { setTimeout(this.restoreClock.bind(this), delay); } else { this.restoreClock(); }
     }
   }
   private restoreClock() {
@@ -227,7 +227,7 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
     if (!this.reset) {
       this.reset = true;
       if (!this.run) { this.resetOut.value = this.resetOut.value.flipBit(ResetLines.RES); }
-      if (delay) { setTimeout(() => this.restoreReset, delay); } else { this.restoreReset(); }
+      if (delay) { setTimeout(this.restoreReset.bind(this), delay); } else { this.restoreReset(); }
     }
   }
   private restoreReset() {
@@ -241,7 +241,7 @@ export class ControlSwitchesCard implements IControlSwitchesCard {
     if (!this.restart) {
       this.restart = true;
       this.clockCtrlOut.value = this.clockCtrlOut.value.flipBit(ClockCtrlLines.RST);
-      if (delay) { setTimeout(() => this.restoreRestart, delay); } else { this.restoreRestart(); }
+      if (delay) { setTimeout(this.restoreRestart.bind(this), delay); } else { this.restoreRestart(); }
     }
   }
   private restoreRestart() {
