@@ -98,6 +98,8 @@ export enum OperationLines {
   IALU,
   /** GTO */
   IGTO,
+  /** STORE */
+  ISTR,
   /** MISC */
   IMSC
 }

@@ -35,6 +35,11 @@ test('mov16', function () {
   expectPart(cpop).hasLinesSet(OperationLines.IM16);
 });
 
+test('store', function () {
+  inst.set(0b10011000);
+  expectPart(cpop).hasLinesSet(OperationLines.ISTR);
+});
+
 test('misc', function () {
   inst.set(0b10101110);
   expectPart(cpop).hasLinesSet(OperationLines.IMSC);

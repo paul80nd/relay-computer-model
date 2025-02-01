@@ -112,6 +112,8 @@ export class ControlCard implements IControlCard {
         this.updateSet();
       } else if (operation.bit(OperationLines.IALU)) {
         this.updateAlu();
+      } else if (operation.bit(OperationLines.ISTR)) {
+        this.updateStore();
       } else if (operation.bit(OperationLines.IGTO)) {
         this.updateGoto();
       } else if (operation.bit(OperationLines.IMSC)) {
@@ -339,6 +341,52 @@ export class ControlCard implements IControlCard {
 
       this.sendAuxReg(regAux);
       this.sendSds(sds);
+      this.sendRegJMXY(regJMXY);
+      this.sendAbort(abort);
+    }
+  }
+
+  private updateStore() {
+    if (this.pulsePart && this.instructionPart) {
+      const pulse = this.pulsePart.value;
+      const instr = this.instructionPart.value;
+      let memory = this.memory;
+      let regABCD = BitValue.Zero;
+      let regJMXY = BitValue.Zero;
+      let abort = BitValue.Zero;
+
+      if (pulse.bit(PulseLines.D)) {
+        // ABT-12
+        abort = abort.flipBit(AbortLines.AT12);
+      }
+
+      if (pulse.bit(PulseLines.J)) {
+        // SEL-M/B2M
+        regJMXY = regJMXY.flipBit(RegJMXYLines.SEM);
+        memory = memory.flipBit(MemoryLines.B2M);
+        // REG-SEL
+        if (!instr.bit(1)) {
+          if (!instr.bit(0)) {
+            regABCD = regABCD.flipBit(RegABCDLines.RSA);
+          } else {
+            regABCD = regABCD.flipBit(RegABCDLines.RSB);
+          }
+        } else {
+          if (!instr.bit(0)) {
+            regABCD = regABCD.flipBit(RegABCDLines.RSC);
+          } else {
+            regABCD = regABCD.flipBit(RegABCDLines.RSD);
+          }
+        }
+      }
+
+      if (pulse.bit(PulseLines.K)) {
+        // MEM-WRITE
+        memory = memory.flipBit(MemoryLines.MEW);
+      }
+
+      this.sendMemory(memory);
+      this.sendRegABCD(regABCD);
       this.sendRegJMXY(regJMXY);
       this.sendAbort(abort);
     }

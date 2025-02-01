@@ -55,6 +55,10 @@ export class DecoderCard implements IDecoderCard {
           // 1000xxxx ALU
           oper = oper.flipBit(OperationLines.IALU);
         }
+        else if (!opCode.bit(5) && opCode.bit(4) && opCode.bit(3) && !opCode.bit(2)) {
+          // 100110xx STORE
+          oper = oper.flipBit(OperationLines.ISTR);
+        }
         else if (opCode.bit(5) && !opCode.bit(4) && !opCode.bit(3)) {
           // 10100xxx MOVE16
           oper = oper.flipBit(OperationLines.IM16);

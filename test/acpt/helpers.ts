@@ -18,6 +18,10 @@ export class TestComputer {
     }
   }
 
+  public memory(address: number) {
+    return this.sut.yBackplane.memory.memoryArray[address];
+  }
+
   public get pcAddress(): number {
     return this.sut.xBackplane.registerPC.pcAddress;
   }
