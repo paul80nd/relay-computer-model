@@ -78,8 +78,8 @@ export class SequencerCard implements ISequencerCard {
           this.fsm = this.fsm.flipBit(13);
           this.fsm = this.fsm.flipBit(0);
         }
-        if (this.fsm.bit(11) && this.abort.bit(AbortLines.AT10)) {
-          this.fsm = this.fsm.flipBit(11);
+        if (this.fsm.bit(10) && this.abort.bit(AbortLines.AT10)) {
+          this.fsm = this.fsm.flipBit(10);
           this.fsm = this.fsm.flipBit(0);
         }
         else if (this.fsm.bit(8) && this.abort.bit(AbortLines.AT08)) {

@@ -57,11 +57,10 @@ test('10 cycle', function () {
   clockTick(); checkPulses("clk 7");
   clockTick(); checkPulses("clk 8", PulseLines.F, PulseLines.G, PulseLines.J);
   clockTick(); checkPulses("clk 9", PulseLines.F, PulseLines.J, PulseLines.K);
-  clockTick(); checkPulses("clk 10", PulseLines.J);
 
   abort.clear();
 
-  clockTick(); checkPulses("clk 11");
+  clockTick(); checkPulses("clk 10");
 });
 
 test('12 cycle', function () {
