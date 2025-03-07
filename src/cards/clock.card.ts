@@ -79,7 +79,7 @@ export class ClockCard implements IClockCard {
         this.runCrystal = false;
         this.stages = BitValue.Zero;
         this.clockOut.value = BitValue.Zero;
-        this.delay = 300;
+        this.delay = 150;
         this.clockRunRelay();
       }
     }
