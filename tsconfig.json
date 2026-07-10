@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2022",
 		"module": "ES2020",
 		"moduleResolution": "node",
     "removeComments": true,
@@ -18,8 +18,7 @@
     "strict": true,
     "alwaysStrict": true,
     "noImplicitReturns": true,
-    "stripInternal": true,
-    "downlevelIteration": true
+    "stripInternal": true
   },
   "include": [
     "src/**/*.ts",

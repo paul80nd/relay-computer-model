@@ -6,8 +6,8 @@ export {
 
 export {
   AbortLines, AluFunctionClLines, AluOperationLines, ClockLines,
-  ConditionLines, DataSwitchGateLines, I2BLines, MemoryLines,
-  OperationLines, RegABCDLines, RegAuxLines, RegJMXYLines
+  ClockCtrlLines, ConditionLines, DataSwitchGateLines, I2BLines,
+  MemoryLines, OperationLines, RegABCDLines, RegAuxLines, RegJMXYLines
 } from './bus/bus-part-lines';
 
 export {
