@@ -7,6 +7,10 @@ on:
   release:
     types: [created]
 
+# Least-privilege default for GITHUB_TOKEN; the publish job widens it below.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest

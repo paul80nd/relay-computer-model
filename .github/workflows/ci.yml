@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Least-privilege default for GITHUB_TOKEN (CI only needs to read the repo)
+permissions:
+  contents: read
+
 jobs:
   build:
 
