@@ -10,7 +10,7 @@
   "author": "Paul Law",
   "license": "MIT",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "test-unit-cov": "npm run compile && jest lib/test/unit --coverage",
     "test-acpt": "npm run compile && jest lib/test/acpt",
     "test-acpt-cov": "npm run compile && jest lib/test/acpt --coverage",
+    "test-cov": "npm run compile && jest lib/test --coverage",
     "lint": "eslint src test",
     "watch": "tsc --watch -p ."
   },
