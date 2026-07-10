@@ -1,10 +1,20 @@
 version: 2
 updates:
-  # npm dependencies (all dev-only for this package)
+  # npm dependencies (all dev-only for this package).
+  # Two grouped PRs per week: one for patch/minor bumps, one for majors —
+  # so related bumps (e.g. all @babel/* or eslint packages) land together
+  # instead of as a flood of individual PRs.
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "03:00"
+      timezone: "Etc/UTC"
+    cooldown:
+      # Wait 7 days after an upstream release before bumping — guards against
+      # immediately-yanked versions, cheap given the weekly schedule.
+      default-days: 7
     open-pull-requests-limit: 5
     ignore:
       # Keep @types/node in lockstep with the Node major we build/run on (24).
@@ -12,19 +22,38 @@ updates:
       - dependency-name: "@types/node"
         versions: [">=25"]
     groups:
-      # Roll every non-major dev-dependency bump into a single weekly PR
-      dev-dependencies:
-        dependency-type: "development"
+      npm-patch-minor:
         update-types:
-          - "minor"
           - "patch"
+          - "minor"
+      npm-major:
+        update-types:
+          - "major"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "npm"
 
-  # GitHub Actions used in the CI/CD workflows
+  # GitHub Actions used in the CI/CD workflows — one bundled PR per week.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "03:00"
+      timezone: "Etc/UTC"
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
     groups:
       github-actions:
         patterns:
           - "*"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
