@@ -6,6 +6,11 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    ignore:
+      # Keep @types/node in lockstep with the Node major we build/run on (24).
+      # Still allows 24.x point updates; bump this ceiling when moving Node major.
+      - dependency-name: "@types/node"
+        versions: [">=25"]
     groups:
       # Roll every non-major dev-dependency bump into a single weekly PR
       dev-dependencies:
