@@ -11,10 +11,14 @@ export class TestComputer {
     this.sut.controlSwitchesCard.toggleReset();
   }
 
-  runToHalt(instructions: number[]) {
+  runToHalt(instructions: number[], maxToggles = Number.MAX_SAFE_INTEGER) {
     this.sut.yBackplane.memory.loadProgram(0, instructions);
+    let toggles = 0;
     while (!this.sut.displayBCard.clockCtrl.bit(ClockCtrlLines.HLT)) {
       this.sut.controlSwitchesCard.toggleClock();
+      if (++toggles > maxToggles) {
+        throw new Error(`Program did not halt within ${maxToggles} clock toggles (pc=0x${this.pcAddress.toString(16)})`);
+      }
     }
   }
 
