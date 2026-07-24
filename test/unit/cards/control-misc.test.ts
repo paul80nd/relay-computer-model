@@ -62,4 +62,3 @@ test('hlt reload', function () {
   expectPart(xbus.auxRegisterPart).hasLinesSet(RegAuxLines.LPC);
   expectPart(opbus.abortPart).hasLinesSet();
 });
-
