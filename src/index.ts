@@ -18,10 +18,6 @@ export {
   IRegisterADCard, IRegisterBCCard, IRegisterICard, IRegisterCardPart,
   IRegisterJCard, IRegisterMCard, IRegisterPCCard, IRegisterXYCard,
   IRegisterYCardPart, ISequencerCard
-} from './cards/';
+} from './cards';
 
 export { ComputerFactory, IComputer, IComputerFactory } from './computer';
-
-
-
-

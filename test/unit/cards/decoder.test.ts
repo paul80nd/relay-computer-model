@@ -61,4 +61,3 @@ test('sequence', function () {
   inst.set(0b10000000);
   expectPart(cpop).hasLinesSet(OperationLines.IALU);
 });
-
